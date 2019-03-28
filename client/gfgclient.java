@@ -6,7 +6,7 @@ import java.io.*;
 public class gfgclient { 
     // initialize socket and input output streams 
     private Socket socket = null; 
-    private BufferedReader input = null; 
+    private Scanner input = null; 
     private DataOutputStream out = null; 
   
     // constructor to put ip address and port 
@@ -17,7 +17,7 @@ public class gfgclient {
             System.out.println("Connected"); 
   
             // takes input from terminal 
-            input = new BufferedReader(System.in); 
+            input = new Scanner(new InputStreamReader(System.in)); 
   
             // sends output to the socket 
             out = new DataOutputStream(socket.getOutputStream()); 
