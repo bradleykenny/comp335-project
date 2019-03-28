@@ -31,15 +31,16 @@ public class gfgclient
         } 
         catch(IOException i) 
         { 
-            System.out.println(i); 
+            System.out.println("IOE: " + i); 
         } 
   
         // string to read message from input 
         byte[] line = new byte[4]; 
   
         // keep reading until "Over" is input 
-        while (!line.equals("Over")) 
+        while (!line.equals("OVER")) 
         { 
+            System.out.println("HERE");
             try
             { 
                 String temp = input.readLine();
@@ -50,7 +51,7 @@ public class gfgclient
             } 
             catch(IOException i) 
             { 
-                System.out.println(i); 
+                System.out.println("IOE: " + i); 
             } 
         } 
   
