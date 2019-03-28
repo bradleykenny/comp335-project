@@ -5,9 +5,9 @@ import java.io.*;
   
 public class gfgclient { 
     // initialize socket and input output streams 
-    private Socket socket            = null; 
-    private DataInputStream  input   = null; 
-    private DataOutputStream out     = null; 
+    private Socket socket = null; 
+    private DataInputStream input = null; 
+    private DataOutputStream out = null; 
   
     // constructor to put ip address and port 
     public gfgclient(String address, int port) { 
@@ -17,10 +17,10 @@ public class gfgclient {
             System.out.println("Connected"); 
   
             // takes input from terminal 
-            input  = new DataInputStream(System.in); 
+            input = new DataInputStream(System.in); 
   
             // sends output to the socket 
-            out    = new DataOutputStream(socket.getOutputStream()); 
+            out = new DataOutputStream(socket.getOutputStream()); 
         } 
         catch(UnknownHostException u) { 
             System.out.println(u); 
@@ -38,10 +38,10 @@ public class gfgclient {
             System.out.println("HERE");
             try { 
                 String temp = input.readLine();
-                line = temp.getBytes("UTF-8");
-                for(byte b : line) {
-                    out.write(b);   
-                }
+                // line = temp.getBytes("UTF-8");
+                // for(byte b : line) {
+                out.writeBytes(temp);
+                // }
             } 
             catch(IOException i) { 
                 System.out.println("IOE: " + i); 
