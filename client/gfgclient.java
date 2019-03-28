@@ -3,19 +3,16 @@
 import java.net.*; 
 import java.io.*; 
   
-public class gfgclient 
-{ 
+public class gfgclient { 
     // initialize socket and input output streams 
     private Socket socket            = null; 
     private DataInputStream  input   = null; 
     private DataOutputStream out     = null; 
   
     // constructor to put ip address and port 
-    public gfgclient(String address, int port) 
-    { 
+    public gfgclient(String address, int port) { 
         // establish a connection 
-        try
-        { 
+        try { 
             socket = new Socket(address, port); 
             System.out.println("Connected"); 
   
@@ -25,12 +22,10 @@ public class gfgclient
             // sends output to the socket 
             out    = new DataOutputStream(socket.getOutputStream()); 
         } 
-        catch(UnknownHostException u) 
-        { 
+        catch(UnknownHostException u) { 
             System.out.println(u); 
         } 
-        catch(IOException i) 
-        { 
+        catch(IOException i) { 
             System.out.println("IOE: " + i); 
         } 
   
@@ -41,35 +36,30 @@ public class gfgclient
         while (!line.equals("OVER")) 
         { 
             System.out.println("HERE");
-            try
-            { 
+            try { 
                 String temp = input.readLine();
                 line = temp.getBytes("UTF-8");
-                for(byte b : line){
+                for(byte b : line) {
                     out.write(b);   
                 }
             } 
-            catch(IOException i) 
-            { 
+            catch(IOException i) { 
                 System.out.println("IOE: " + i); 
             } 
         } 
   
         // close the connection 
-        try
-        { 
+        try { 
             input.close(); 
             out.close(); 
             socket.close(); 
         } 
-        catch(IOException i) 
-        { 
+        catch(IOException i) { 
             System.out.println(i); 
         } 
     } 
   
-    public static void main(String args[]) 
-    { 
+    public static void main(String args[]) { 
         gfgclient client = new gfgclient("127.0.0.1", 8096); 
     } 
 } 
