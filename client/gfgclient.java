@@ -7,7 +7,7 @@ import java.util.*;
 public class gfgclient { 
     // initialize socket and input output streams 
     private Socket socket = null; 
-    private Scanner input = null; 
+    private DataInputStream input = null; 
     private DataOutputStream out = null; 
   
     // constructor to put ip address and port 
@@ -31,16 +31,14 @@ public class gfgclient {
         } 
   
         // string to read message from input 
-        byte[] line = new byte[4]; 
+        String line = ""; 
   
         // keep reading until "Over" is input 
         while (!line.equals("OVER")) { 
             try { 
-                String temp = input.readLine();
-                // line = temp.getBytes("UTF-8");
-                // for(byte b : line) {
-                out.writeBytes(temp);
-                // }
+                
+                line = input.readLine();
+                out.writeBytes(line);
             } 
             catch(IOException i) { 
                 System.out.println("IOE: " + i); 
