@@ -7,6 +7,7 @@ public class client {
 		try {
 			int serverPort = 8096;
 			s = new Socket(args[1], serverPort);
+			System.out.print("Yeet");
 			DataInputStream in = new DataInputStream(s.getInputStream());
 			DataOutputStream out = new DataOutputStream(s.getOutputStream());
 			out.writeUTF(args[0]);
