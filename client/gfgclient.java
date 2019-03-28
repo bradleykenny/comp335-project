@@ -18,7 +18,7 @@ public class gfgclient {
             System.out.println("Connected"); 
   
             // takes input from terminal 
-            input = new Scanner(new InputStreamReader(System.in)); 
+            input = new DataInputStream(System.in); 
   
             // sends output to the socket 
             out = new DataOutputStream(socket.getOutputStream()); 
@@ -34,9 +34,7 @@ public class gfgclient {
         byte[] line = new byte[4]; 
   
         // keep reading until "Over" is input 
-        while (!line.equals("OVER")) 
-        { 
-            System.out.println("HERE");
+        while (!line.equals("OVER")) { 
             try { 
                 String temp = input.readLine();
                 // line = temp.getBytes("UTF-8");

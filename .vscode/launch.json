@@ -2,6 +2,12 @@
 	"configurations": [
 		{
 			"type": "java",
+			"name": "CodeLens (Launch) - gfgclient",
+			"request": "launch",
+			"mainClass": "gfgclient"
+		},
+		{
+			"type": "java",
 			"name": "CodeLens (Launch) - client",
 			"request": "launch",
 			"mainClass": "client"
