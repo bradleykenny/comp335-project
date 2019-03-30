@@ -38,7 +38,7 @@ public class gfgclient {
             try { 
                 System.out.println("HEY");
                 line = input.readLine();
-                out.writeBytes("HELO");
+                out.write(line.getBytes());
             } 
             catch(IOException i) { 
                 System.out.println("IOE: " + i); 
