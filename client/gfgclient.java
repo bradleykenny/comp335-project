@@ -36,7 +36,6 @@ public class gfgclient {
         // keep reading until "Over" is input 
         while (!line.equals("OVER")) { 
             try { 
-                System.out.println("HEY");
                 line = input.readLine();
                 out.write(line.getBytes());
             } 
