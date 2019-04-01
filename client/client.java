@@ -8,7 +8,7 @@ public class client {
     private DataOutputStream output = null; 
   
     public client(String address, int port) { 
-        // establish a connection 
+        // CREATE CONNECTION 
         try { 
             socket = new Socket(address, port); 
             System.out.println("Connected."); 
@@ -35,7 +35,7 @@ public class client {
             } 
         } 
   
-        // close the connection 
+        // CLOSE CONNECTION
         try { 
             input.close(); 
             output.close(); 
