@@ -24,16 +24,7 @@ public class client {
         } 
   
         // DEBUGGING ONLY
-        String line = ""; 
-        while (!line.equals("QUIT")) { 
-            try { 
-                line = input.readLine();
-                output.write(line.getBytes());
-            } 
-            catch(IOException i) { 
-                System.out.println("IOE: " + i); 
-            } 
-        } 
+        debug();
   
         // CLOSE CONNECTION
         try { 
@@ -46,15 +37,34 @@ public class client {
         } 
 	} 
 	
-	// TODO: method to send information to the server
-	public void send() {
-		//
+	// SENDING MESSAGES TO THE SERVER
+	public void send(DataOutputStream destination, String message) {
+        try {
+            destination.write(message.getBytes());
+            System.out.println("SENT: " + message);
+        } catch (IOException i) {
+            System.out.println("ERR: " + i);
+        }
 	}
 
 	// TODO: method to receive information from the server
 	public void receive() {
 		//
-	}
+    }
+    
+    // DEBUGGING VIA MANUAL INPUT/OUTPUT
+    public void debug() {
+        String line = ""; 
+        while (!line.equals("QUIT")) { 
+            try { 
+                line = input.readLine();
+                output.write(line.getBytes());
+            } 
+            catch(IOException i) { 
+                System.out.println("IOE: " + i); 
+            } 
+        } 
+    }
 	
 	// main method that runs
     public static void main(String args[]) { 
