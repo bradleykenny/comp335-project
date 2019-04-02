@@ -4,8 +4,8 @@ import java.util.*;
   
 public class client { 
     private Socket socket = null; 
-    private DataInputStream input = null; 
-    private DataOutputStream output = null; 
+    private BufferedReader input = null; // USED GET INFO FROM SOCKET
+    private DataOutputStream output = null; // USED TO WRITE TO SOCKET
   
     public client(String address, int port) { 
         // CREATE CONNECTION 
@@ -13,7 +13,7 @@ public class client {
             socket = new Socket(address, port); 
             System.out.println("Connected."); 
   
-            input = new DataInputStream(socket.getInputStream()); 
+            input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             output = new DataOutputStream(socket.getOutputStream()); 
         } 
         catch(UnknownHostException u) { 
@@ -24,10 +24,11 @@ public class client {
         } 
 
         send(output, "HELO");
-        receive(input);
+        String received = receive(input);
+        System.out.println("RECD: " + received);
         
         // DEBUGGING ONLY
-        debug();
+        debug(output);
   
         // CLOSE CONNECTION
         try { 
@@ -51,11 +52,11 @@ public class client {
 	}
 
 	// RECEIVING MESSAGES FROM THE SOCKET
-	public String receive(DataInputStream input) {
+	public String receive(BufferedReader input) {
         String message = "";
         try {
             while (message == "") {
-                message = input.readAllBytes().toString();
+                message = input.readLine();
             }
         } catch(IOException i) {
             System.out.println("ERR: " + i);
@@ -64,7 +65,7 @@ public class client {
     }
     
     // DEBUGGING VIA MANUAL INPUT/OUTPUT
-    public void debug() {
+    public void debug(DataOutputStream output) {
         DataInputStream man_input = new DataInputStream(System.in); 
         String line = ""; 
         while (!line.equals("QUIT")) { 
