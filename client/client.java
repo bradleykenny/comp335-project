@@ -13,7 +13,7 @@ public class client {
             socket = new Socket(address, port); 
             System.out.println("Connected."); 
   
-            input = new DataInputStream(System.in); 
+            input = new DataInputStream(socket.getInputStream()); 
             output = new DataOutputStream(socket.getOutputStream()); 
         } 
         catch(UnknownHostException u) { 
@@ -24,6 +24,8 @@ public class client {
         } 
 
         send(output, "HELO");
+        receive(input);
+        
   
         // DEBUGGING ONLY
         debug();
@@ -50,16 +52,23 @@ public class client {
 	}
 
 	// RECEIVING MESSAGES FROM THE SOCKET
-	public void receive(DataInputStream input) {
-		// 
+	public String receive(DataInputStream input) {
+        String message = "";
+        try {
+            message = input.readAllBytes().toString();
+        } catch(IOException i) {
+            System.out.println("ERR: " + i);
+        } 
+        return message;
     }
     
     // DEBUGGING VIA MANUAL INPUT/OUTPUT
     public void debug() {
+        DataInputStream man_input = new DataInputStream(System.in); 
         String line = ""; 
         while (!line.equals("QUIT")) { 
             try { 
-                line = input.readLine();
+                line = man_input.readLine();
                 output.write(line.getBytes());
             } 
             catch(IOException i) { 
