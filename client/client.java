@@ -26,7 +26,6 @@ public class client {
         send(output, "HELO");
         receive(input);
         
-  
         // DEBUGGING ONLY
         debug();
   
@@ -55,7 +54,9 @@ public class client {
 	public String receive(DataInputStream input) {
         String message = "";
         try {
-            message = input.readAllBytes().toString();
+            while (message == "") {
+                message = input.readAllBytes().toString();
+            }
         } catch(IOException i) {
             System.out.println("ERR: " + i);
         } 
