@@ -6,7 +6,7 @@ public class client {
     private Socket socket = null; 
     private BufferedReader input = null; // USED GET INFO FROM SOCKET
     private DataOutputStream output = null; // USED TO WRITE TO SOCKET
-  
+    
     public client(String address, int port) { 
         // CREATE CONNECTION 
         try { 
@@ -57,6 +57,7 @@ public class client {
         try {
             while (message == "") {
                 message = input.readLine();
+                System.out.println("MESSAGE: " + message);
             }
         } catch(IOException i) {
             System.out.println("ERR: " + i);
