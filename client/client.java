@@ -22,6 +22,8 @@ public class client {
         catch(IOException i) { 
             System.out.println("ERR: " + i); 
         } 
+
+        send(output, "HELO");
   
         // DEBUGGING ONLY
         debug();
@@ -47,9 +49,9 @@ public class client {
         }
 	}
 
-	// TODO: method to receive information from the server
-	public void receive() {
-		//
+	// RECEIVING MESSAGES FROM THE SOCKET
+	public void receive(DataInputStream input) {
+		// 
     }
     
     // DEBUGGING VIA MANUAL INPUT/OUTPUT
@@ -66,8 +68,8 @@ public class client {
         } 
     }
 	
-	// main method that runs
+	// THIS IS WHAT RUNS
     public static void main(String args[]) { 
         client ourClient = new client("127.0.0.1", 8096); 
-    } 
-} 
+    }
+}
