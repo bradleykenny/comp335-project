@@ -24,8 +24,9 @@ public class client {
 		} 
 
 		send(output, "HELO");
-		String received = receive(input);
+		receive(input);
 		send(output, "AUTH BJM");
+		receive(input);
 		
 		// UNCOMMENT FOR DEBUGGING ONLY
 		// debug(output);
@@ -55,19 +56,16 @@ public class client {
 	}
 
 	// RECEIVING MESSAGES FROM THE SOCKET
-	public String receive(BufferedReader input) {
+	public void receive(BufferedReader input) {
 		String message = "";
 		try {
 			while (input.ready()) {
 				message += (char) input.read();
 			} System.out.print("RCVD: " + message);
-			return message;
 		} catch (IOException i) {
 			System.out.println("ERR: " + i);
 		} 
-		// dont get here
-		System.out.println("REC DONE");
-		return message;
+		// return message;
 	}
 	
 	// DEBUGGING VIA MANUAL INPUT/OUTPUT
