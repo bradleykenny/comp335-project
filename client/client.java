@@ -28,8 +28,6 @@ public class client {
 		String received = receive(input);
 
 		send(output, "AUTH john");
-
-		System.out.println("RCVD: " + received);
 		
 		// UNCOMMENT FOR DEBUGGING ONLY
 		// debug(output);
@@ -48,8 +46,10 @@ public class client {
 	// SENDING MESSAGES TO THE SERVER
 	public void send(DataOutputStream destination, String message) {
 		try {
+			message += "\n";
 			destination.write(message.getBytes());
-			System.out.println("SENT: " + message);
+			System.out.print("SENT: " + message);
+			destination.flush();
 		} 
 		catch (IOException i) {
 			System.out.println("ERR: " + i);
@@ -61,22 +61,15 @@ public class client {
 		int singleChar = 0;
 		String message = "";
 		try {
-			if (input.ready()) {
-				try {
-					System.out.print("RCVD: ");
-					while ((singleChar = input.read()) != -1) {
-						System.out.print((char) singleChar);
-						message += (char) singleChar;
-					}
-				} catch (IOException i) {
-					System.out.println("ERR: " + i);
-				}
-			}
-
-		} 
-		catch(IOException i) {
+			while (input.ready()) {
+				message += (char) input.read();
+			} System.out.print("RCVD: " + message);
+			return message;
+		} catch (IOException i) {
 			System.out.println("ERR: " + i);
 		} 
+		// dont get here
+		System.out.println("REC DONE");
 		return message;
 	}
 	
