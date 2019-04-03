@@ -1,11 +1,17 @@
 import java.net.*; 
 import java.io.*; 
 import java.util.*;
-  
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.w3c.dom.*;
+
+
 public class client { 
 	private Socket socket = null; 
 	private BufferedReader input = null; // USED GET INFO FROM SOCKET
-	private DataOutputStream output = null; // USED TO WRITE TO SOCKET
+    private DataOutputStream output = null; // USED TO WRITE TO SOCKET
+    private NodeList servers = null;
 	
 	public client(String address, int port) { 
 		// CREATE CONNECTION 
@@ -22,7 +28,7 @@ public class client {
 		catch(IOException i) { 
 			System.out.println("ERR: " + i); 
 		} 
-
+        parseXML(servers);
 		send(output, "HELO");
 		receive(input);
 		send(output, "AUTH BJM");
@@ -82,10 +88,53 @@ public class client {
 				System.out.println("IOE: " + i); 
 			} 
 		} 
-	}
-	
+    }
+    
+    public void parseXML(NodeList servers){
+        try{
+            File systemXML = new File("../ds-sim_v3/system.xml");
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(systemXML);
+            doc.getDocumentElement().normalize();
+            servers = doc.getElementsByTagName("servers");
+            System.out.println(servers.getLength());
+            String[][] serversArray = new String[2][6];
+            for(int i = 0; i<servers.getLength(); i++){
+                System.out.println(i);
+                Element server =(Element) servers.item(i);
+                System.out.println("Type:"+(server.getAttribute("type"));
+            }
+        }
+        catch(Exception ex){
+            ex.printStackTrace();
+        }
+
+    }
+    public class Server{
+        public String type;
+        public int limit;
+        public int bootupTime;
+        public float rate;
+        public int coreCount;
+        public int memory;
+        public int disk;
+
+        Server(String t, int l, int b, float r, int c, int m, int d){
+            this.type = t;
+            this.limit = l;
+            this.bootupTime=b;
+            this.rate = r;
+            this.coreCount =c;
+            this.memory =m;
+            this.disk =d;
+        }
+        
+    }
 	// THIS IS WHAT RUNS
 	public static void main(String args[]) { 
 		client ourClient = new client("127.0.0.1", 8096);
 	}
 }
+
+
