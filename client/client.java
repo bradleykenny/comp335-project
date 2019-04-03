@@ -64,12 +64,13 @@ public class client {
 	public void receive(BufferedReader input) {
 		String message = "";
 		try {
+			while (!input.ready()) {} // MAKE THIS BETTER
 			while (input.ready()) {
 				message += (char) input.read();
 			} System.out.print("RCVD: " + message);
 		} catch (IOException i) {
 			System.out.println("ERR: " + i);
-		} 
+		}
 		// return message;
 	}
 	
