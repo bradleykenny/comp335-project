@@ -11,7 +11,7 @@ public class client {
 	private Socket socket = null; 
 	private BufferedReader input = null; // USED GET INFO FROM SOCKET
     private DataOutputStream output = null; // USED TO WRITE TO SOCKET
-	
+	private Server[] serverArr = new Server[1];
 	public client(String address, int port) { 
 		// CREATE CONNECTION 
 		try { 
@@ -99,10 +99,19 @@ public class client {
 
             doc.getDocumentElement().normalize();
             NodeList servers = doc.getElementsByTagName("server");
+            serverArr = new Server[servers.getLength()];
             for(int i = 0; i<servers.getLength(); i++){
-                System.out.println(i);
                 Element server =(Element) servers.item(i);
-                System.out.println("Type:"+(server.getAttribute("type")));
+                String t = server.getAttribute("type");
+                int l = Integer.parseInt(server.getAttribute("limit"));
+                int b = Integer.parseInt(server.getAttribute("bootupTime"));
+                float r = Float.parseFloat(server.getAttribute("rate"));
+                int c = Integer.parseInt(server.getAttribute("coreCount"));
+                int m = Integer.parseInt(server.getAttribute("memory"));
+                int d = Integer.parseInt(server.getAttribute("disk"));
+                Server temp = new Server(t,l,b,r,c,m,d);
+                serverArr[i] = temp;
+                System.out.println(serverArr[i].coreCount);
             }
         }
         catch(Exception ex){
