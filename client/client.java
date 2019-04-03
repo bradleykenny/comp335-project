@@ -11,7 +11,6 @@ public class client {
 	private Socket socket = null; 
 	private BufferedReader input = null; // USED GET INFO FROM SOCKET
     private DataOutputStream output = null; // USED TO WRITE TO SOCKET
-    private NodeList servers = null;
 	
 	public client(String address, int port) { 
 		// CREATE CONNECTION 
@@ -28,7 +27,7 @@ public class client {
 		catch(IOException i) { 
 			System.out.println("ERR: " + i); 
 		} 
-        parseXML(servers);
+        parseXML();
 		send(output, "HELO");
 		receive(input);
 		send(output, "AUTH BJM");
@@ -90,20 +89,20 @@ public class client {
 		} 
     }
     
-    public void parseXML(NodeList servers){
+    public void parseXML(){
         try{
             File systemXML = new File("../ds-sim_v3/system.xml");
+
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(systemXML);
+
             doc.getDocumentElement().normalize();
-            servers = doc.getElementsByTagName("servers");
-            System.out.println(servers.getLength());
-            String[][] serversArray = new String[2][6];
+            NodeList servers = doc.getElementsByTagName("server");
             for(int i = 0; i<servers.getLength(); i++){
                 System.out.println(i);
                 Element server =(Element) servers.item(i);
-                System.out.println("Type:"+(server.getAttribute("type"));
+                System.out.println("Type:"+(server.getAttribute("type")));
             }
         }
         catch(Exception ex){
