@@ -31,8 +31,8 @@ public class client {
 
 		System.out.println("RCVD: " + received);
 		
-		// DEBUGGING ONLY
-		//debug(output);
+		// UNCOMMENT FOR DEBUGGING ONLY
+		// debug(output);
   
 		// CLOSE CONNECTION
 		try { 
@@ -63,7 +63,7 @@ public class client {
 		try {
 			if (input.ready()) {
 				try {
-					System.out.println("RCVD: ");
+					System.out.print("RCVD: ");
 					while ((singleChar = input.read()) != -1) {
 						System.out.print((char) singleChar);
 						message += (char) singleChar;
@@ -77,18 +77,17 @@ public class client {
 		catch(IOException i) {
 			System.out.println("ERR: " + i);
 		} 
-		// this prints out null
-		System.out.flush();
-		return message + '\n';
+		return message;
 	}
 	
 	// DEBUGGING VIA MANUAL INPUT/OUTPUT
+	// NOTE: DOESNT WORK RN
 	public void debug(DataOutputStream output) {
-		DataInputStream man_input = new DataInputStream(System.in); 
+		BufferedInputStream man_input = new BufferedInputStream(System.in); 
 		String line = ""; 
 		while (!line.equals("QUIT")) { 
 			try { 
-				line = man_input.readLine();
+				// line = man_input.read();
 				output.write(line.getBytes());
 			} 
 			catch(IOException i) { 
@@ -99,6 +98,6 @@ public class client {
 	
 	// THIS IS WHAT RUNS
 	public static void main(String args[]) { 
-		client ourClient = new client("127.0.0.1", 8096); 
+		client ourClient = new client("127.0.0.1", 8096);
 	}
 }
