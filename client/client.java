@@ -24,10 +24,8 @@ public class client {
 		} 
 
 		send(output, "HELO");
-		
 		String received = receive(input);
-
-		send(output, "AUTH john");
+		send(output, "AUTH BJM");
 		
 		// UNCOMMENT FOR DEBUGGING ONLY
 		// debug(output);
@@ -58,7 +56,6 @@ public class client {
 
 	// RECEIVING MESSAGES FROM THE SOCKET
 	public String receive(BufferedReader input) {
-		int singleChar = 0;
 		String message = "";
 		try {
 			while (input.ready()) {
