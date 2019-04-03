@@ -4,12 +4,13 @@ import java.util.*;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.w3c.dom.*;
 
 
 public class client { 
 	private Socket socket = null; 
-	private BufferedReader input = null; // USED GET INFO FROM SOCKET
+	private BufferedReader input = null; 	// USED GET INFO FROM SOCKET
     private DataOutputStream output = null; // USED TO WRITE TO SOCKET
 	private Server[] serverArr = new Server[1];
 	public client(String address, int port) { 
@@ -27,11 +28,16 @@ public class client {
 		catch(IOException i) { 
 			System.out.println("ERR: " + i); 
 		} 
-        parseXML();
+
+		// nest the below/working code where
+		// while (input.equal "QUIT")
+
 		send(output, "HELO");
 		receive(input);
 		send(output, "AUTH BJM");
 		receive(input);
+		parseXML();
+		send(output, "REDY");
 		
 		// UNCOMMENT FOR DEBUGGING ONLY
 		// debug(output);
@@ -101,17 +107,17 @@ public class client {
             NodeList servers = doc.getElementsByTagName("server");
             serverArr = new Server[servers.getLength()];
             for(int i = 0; i<servers.getLength(); i++){
-                Element server =(Element) servers.item(i);
+                Element server = (Element) servers.item(i);
                 String t = server.getAttribute("type");
-                int l = Integer.parseInt(server.getAttribute("limit"));
-                int b = Integer.parseInt(server.getAttribute("bootupTime"));
+                int l 	= Integer.parseInt(server.getAttribute("limit"));
+                int b 	= Integer.parseInt(server.getAttribute("bootupTime"));
                 float r = Float.parseFloat(server.getAttribute("rate"));
-                int c = Integer.parseInt(server.getAttribute("coreCount"));
-                int m = Integer.parseInt(server.getAttribute("memory"));
-                int d = Integer.parseInt(server.getAttribute("disk"));
+                int c 	= Integer.parseInt(server.getAttribute("coreCount"));
+                int m 	= Integer.parseInt(server.getAttribute("memory"));
+                int d 	= Integer.parseInt(server.getAttribute("disk"));
                 Server temp = new Server(t,l,b,r,c,m,d);
                 serverArr[i] = temp;
-                System.out.println(serverArr[i].coreCount);
+                //System.out.println(serverArr[i].coreCount);
             }
         }
         catch(Exception ex){
