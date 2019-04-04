@@ -46,6 +46,8 @@ public class client {
 		} else {
 			while (!finished) {
 				send("RESC ..."); 
+				// RECEIVE OK
+				// SEND SCHD
 			}
 		}
 		
@@ -85,8 +87,8 @@ public class client {
 	// TERMINATES CONNECTIONS AND SENDS/RECEIVES QUIT MESSAGES
 	public void quit() {
 		try { 
-			send(output, "QUIT");
-			currString = receive(input);
+			send("QUIT");
+			currString = receive();
 			if (currString == "QUIT") {
 				input.close(); 
 				output.close(); 
