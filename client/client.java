@@ -12,7 +12,9 @@ public class client {
 	private BufferedReader input = null; 	// USED GET INFO FROM SOCKET
     private DataOutputStream output = null; // USED TO WRITE TO SOCKET
 	private Server[] serverArr = new Server[1];
+	
 	private String currString;
+	private Boolean finished = false;
 
 	public client(String address, int port) { 
 		// ESTABLISH CONNECTION 
@@ -31,18 +33,20 @@ public class client {
 		} 
 
 		// CONNECTION SET-UP
-		send(output, "HELO");
-		currString = receive(input);
-		send(output, "AUTH BJM");
-		currString = receive(input);
+		send("HELO");
+		currString = receive();
+		send("AUTH BJM");
+		currString = receive();
 		parseXML();
-		send(output, "REDY");
-		currString = receive(input);
+		send("REDY");
+		currString = receive();
 		
 		if (currString == "NONE") {
 			quit();
 		} else {
-			
+			while (!finished) {
+				send("RESC ..."); 
+			}
 		}
 		
 		// UNCOMMENT FOR DEBUGGING ONLY
@@ -52,12 +56,12 @@ public class client {
 	} 
 	
 	// SENDING MESSAGES TO THE SERVER
-	public void send(DataOutputStream destination, String message) {
+	public void send(String message) {
 		try {
 			message += "\n";
-			destination.write(message.getBytes());
+			output.write(message.getBytes());
 			System.out.print("SENT: " + message);
-			destination.flush();
+			output.flush();
 		} 
 		catch (IOException i) {
 			System.out.println("ERR: " + i);
@@ -65,7 +69,7 @@ public class client {
 	}
 
 	// RECEIVING MESSAGES FROM THE SOCKET
-	public String receive(BufferedReader input) {
+	public String receive() {
 		String message = "";
 		try {
 			while (!input.ready()) {} // MAKE THIS BETTER
