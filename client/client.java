@@ -1,6 +1,5 @@
 import java.net.*; 
 import java.io.*; 
-import java.util.*;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -16,7 +15,7 @@ public class client {
 	private String currString;
 
 	public client(String address, int port) { 
-		// CREATE CONNECTION 
+		// ESTABLISH CONNECTION 
 		try { 
 			socket = new Socket(address, port); 
 			System.out.println("Connected."); 
@@ -31,9 +30,7 @@ public class client {
 			System.out.println("ERR: " + i); 
 		} 
 
-		// nest the below/working code where
-		// while (input.equal "QUIT")
-
+		// CONNECTION SET-UP
 		send(output, "HELO");
 		currString = receive(input);
 		send(output, "AUTH BJM");
@@ -41,14 +38,16 @@ public class client {
 		parseXML();
 		send(output, "REDY");
 		currString = receive(input);
+		
 		if (currString == "NONE") {
 			quit();
+		} else {
+			
 		}
 		
 		// UNCOMMENT FOR DEBUGGING ONLY
 		// debug(output);
-  
-		// CLOSE CONNECTION
+
 		quit();
 	} 
 	
@@ -79,6 +78,7 @@ public class client {
 		return message;
 	}
 
+	// TERMINATES CONNECTIONS AND SENDS/RECEIVES QUIT MESSAGES
 	public void quit() {
 		try { 
 			send(output, "QUIT");
