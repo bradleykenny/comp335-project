@@ -96,8 +96,8 @@ public class client {
 		} 
     }
     
-    public void parseXML(){
-        try{
+    public void parseXML() {
+        try {
             File systemXML = new File("../ds-sim_v3/system.xml");
 
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -107,26 +107,26 @@ public class client {
             doc.getDocumentElement().normalize();
             NodeList servers = doc.getElementsByTagName("server");
             serverArr = new Server[servers.getLength()];
-            for(int i = 0; i<servers.getLength(); i++){
+            for(int i = 0; i<servers.getLength(); i++) {
                 Element server = (Element) servers.item(i);
                 String t = server.getAttribute("type");
-                int l 	= Integer.parseInt(server.getAttribute("limit"));
-                int b 	= Integer.parseInt(server.getAttribute("bootupTime"));
+                int l = Integer.parseInt(server.getAttribute("limit"));
+                int b = Integer.parseInt(server.getAttribute("bootupTime"));
                 float r = Float.parseFloat(server.getAttribute("rate"));
-                int c 	= Integer.parseInt(server.getAttribute("coreCount"));
-                int m 	= Integer.parseInt(server.getAttribute("memory"));
-                int d 	= Integer.parseInt(server.getAttribute("disk"));
-                Server temp = new Server(t,l,b,r,c,m,d);
+                int c = Integer.parseInt(server.getAttribute("coreCount"));
+                int m = Integer.parseInt(server.getAttribute("memory"));
+                int d = Integer.parseInt(server.getAttribute("disk"));
+                Server temp = new Server(t, l, b, r, c, m, d);
                 serverArr[i] = temp;
                 //System.out.println(serverArr[i].coreCount);
             }
         }
-        catch(Exception ex){
+        catch(Exception ex) {
             ex.printStackTrace();
         }
 
     }
-    public class Server{
+    public class Server {
         public String type;
         public int limit;
         public int bootupTime;
@@ -135,14 +135,14 @@ public class client {
         public int memory;
         public int disk;
 
-        Server(String t, int l, int b, float r, int c, int m, int d){
+        Server(String t, int l, int b, float r, int c, int m, int d) {
             this.type = t;
             this.limit = l;
-            this.bootupTime=b;
+            this.bootupTime = b;
             this.rate = r;
-            this.coreCount =c;
-            this.memory =m;
-            this.disk =d;
+            this.coreCount = c;
+            this.memory = m;
+            this.disk = d;
         }
         
     }
