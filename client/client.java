@@ -13,6 +13,8 @@ public class client {
 	private BufferedReader input = null; 	// USED GET INFO FROM SOCKET
     private DataOutputStream output = null; // USED TO WRITE TO SOCKET
 	private Server[] serverArr = new Server[1];
+	private String currString;
+
 	public client(String address, int port) { 
 		// CREATE CONNECTION 
 		try { 
@@ -33,9 +35,9 @@ public class client {
 		// while (input.equal "QUIT")
 
 		send(output, "HELO");
-		receive(input);
+		currString = receive(input);
 		send(output, "AUTH BJM");
-		receive(input);
+		currString = receive(input);
 		parseXML();
 		send(output, "REDY");
 		
@@ -67,7 +69,7 @@ public class client {
 	}
 
 	// RECEIVING MESSAGES FROM THE SOCKET
-	public void receive(BufferedReader input) {
+	public String receive(BufferedReader input) {
 		String message = "";
 		try {
 			while (!input.ready()) {} // MAKE THIS BETTER
@@ -77,7 +79,7 @@ public class client {
 		} catch (IOException i) {
 			System.out.println("ERR: " + i);
 		}
-		// return message;
+		return message;
 	}
 	
 	// DEBUGGING VIA MANUAL INPUT/OUTPUT
