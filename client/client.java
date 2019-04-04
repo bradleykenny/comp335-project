@@ -40,19 +40,16 @@ public class client {
 		currString = receive(input);
 		parseXML();
 		send(output, "REDY");
+		currString = receive(input);
+		if (currString == "NONE") {
+			quit();
+		}
 		
 		// UNCOMMENT FOR DEBUGGING ONLY
 		// debug(output);
   
 		// CLOSE CONNECTION
-		try { 
-			input.close(); 
-			output.close(); 
-			socket.close(); 
-		} 
-		catch(IOException i) { 
-			System.out.println("ERR: " + i); 
-		} 
+		quit();
 	} 
 	
 	// SENDING MESSAGES TO THE SERVER
@@ -80,6 +77,17 @@ public class client {
 			System.out.println("ERR: " + i);
 		}
 		return message;
+	}
+
+	public void quit() {
+		try { 
+			input.close(); 
+			output.close(); 
+			socket.close(); 
+		} 
+		catch(IOException i) { 
+			System.out.println("ERR: " + i); 
+		} 
 	}
 	
 	// DEBUGGING VIA MANUAL INPUT/OUTPUT
