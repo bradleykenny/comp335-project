@@ -121,7 +121,7 @@ public class client {
             doc.getDocumentElement().normalize();
             NodeList servers = doc.getElementsByTagName("server");
             serverArr = new Server[servers.getLength()];
-            for(int i = 0; i<servers.getLength(); i++) {
+            for(int i = 0; i < servers.getLength(); i++) {
                 Element server = (Element) servers.item(i);
                 String t = server.getAttribute("type");
                 int l = Integer.parseInt(server.getAttribute("limit"));
@@ -139,7 +139,8 @@ public class client {
             ex.printStackTrace();
         }
 
-    }
+	}
+	
     public class Server {
         public String type;
         public int limit;
@@ -157,9 +158,9 @@ public class client {
             this.coreCount = c;
             this.memory = m;
             this.disk = d;
-        }
-        
-    }
+        } 
+	}
+	
 	// THIS IS WHAT RUNS
 	public static void main(String args[]) { 
 		client ourClient = new client("127.0.0.1", 8096);
