@@ -81,9 +81,13 @@ public class client {
 
 	public void quit() {
 		try { 
-			input.close(); 
-			output.close(); 
-			socket.close(); 
+			send(output, "QUIT");
+			currString = receive(input);
+			if (currString == "QUIT") {
+				input.close(); 
+				output.close(); 
+				socket.close(); 
+			}
 		} 
 		catch(IOException i) { 
 			System.out.println("ERR: " + i); 
