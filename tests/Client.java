@@ -28,9 +28,6 @@ public class Client {
 		} catch (IOException i) {
 			System.out.println("ERR: " + i);
 		}
-
-		// UNCOMMENT FOR DEBUGGING ONLY
-		// debug(output);
 	}
 
 	public void run() {
@@ -67,7 +64,6 @@ public class Client {
 	// SENDING MESSAGES TO THE SERVER
 	public void send(String message) {
 		try {
-			// message += "\n";
 			output.write(message.getBytes());
 			// System.out.print("SENT: " + message);
 			output.flush();
@@ -81,7 +77,7 @@ public class Client {
 		String message = "";
 		try {
 			while (!input.ready()) {
-			} 
+			}
 			while (input.ready()) {
 				message += (char) input.read();
 			}
@@ -105,21 +101,6 @@ public class Client {
 			}
 		} catch (IOException i) {
 			System.out.println("ERR: " + i);
-		}
-	}
-
-	// DEBUGGING VIA MANUAL INPUT/OUTPUT
-	// NOTE: DOESNT WORK RN
-	public void debug(DataOutputStream output) {
-		BufferedInputStream man_input = new BufferedInputStream(System.in);
-		String line = "";
-		while (!line.equals("QUIT")) {
-			try {
-				// line = man_input.read();
-				output.write(line.getBytes());
-			} catch (IOException i) {
-				System.out.println("IOE: " + i);
-			}
 		}
 	}
 
