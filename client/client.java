@@ -10,9 +10,9 @@ import org.w3c.dom.*;
 public class Client { 
 	private Socket socket = null; 
 	private BufferedReader input = null; 	// USED GET INFO FROM SOCKET
-    private DataOutputStream output = null; // USED TO WRITE TO SOCKET
+	private DataOutputStream output = null; // USED TO WRITE TO SOCKET
 	private Server[] serverArr = new Server[1];
-	
+
 	private String currString;
 	private Boolean finished = false;
 
