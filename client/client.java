@@ -44,6 +44,7 @@ public class client {
 		if (currString == "NONE") {
 			quit();
 		} else {
+			// !!! NEED TO COMPLETE FROM HERE ONWARDS
 			while (!finished) {
 				send("RESC ..."); 
 				// RECEIVE OK
