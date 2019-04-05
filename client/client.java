@@ -19,7 +19,7 @@ public class Client {
 		// ESTABLISH CONNECTION
 		try {
 			socket = new Socket(address, port);
-			System.out.println("Connected.");
+			// System.out.println("Connected.");
 
 			input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			output = new DataOutputStream(socket.getOutputStream());
