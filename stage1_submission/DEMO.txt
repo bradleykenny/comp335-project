@@ -14,7 +14,6 @@ STEPS FOR DEMO:
 	1. Enter the directory containing the files we want to use for the demonstration.
 	2. Run the command "javac Client.java" to compile the Java file.
 	3. Run the server using the relevant command.
-		a. In the case of ds-server, it would be "./ds-server -c <config_file> -v all". (Using all to show entire 
-		output; could use something else).
+		a. In the case of ds-server, it would be "./ds-server -c <config_file> -v all". (Using all to show entire output; could use something else).
 	4. Run the client using "java Client". This will enable the simulation.
 	5. Observe output. 
