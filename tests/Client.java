@@ -40,7 +40,7 @@ public class Client {
 		// CONNECTION SET-UP
 		send("HELO");
 		currString = receive();
-		send("AUTH comp335");
+		send("AUTH BJM");
 		currString = receive();
 		parseXML();
 		send("REDY");
@@ -61,7 +61,7 @@ public class Client {
                 }
 				String[] jobData = currString.split("\\s+");
 			    int count = Integer.parseInt(jobData[2]);
-			    send("SCHD "+count+ " " +serverArr[largestServer].type+" "+ largestServer);
+			    send("SCHD "+count+ " " +serverArr[largestServer].type+" "+ "0");
 			    currString = receive();
 			}
 		}
@@ -71,9 +71,9 @@ public class Client {
 	// SENDING MESSAGES TO THE SERVER
 	public void send(String message) {
 		try {
-			//message += "\n";
+			// message += "\n";
 			output.write(message.getBytes());
-			System.out.println("SENT: " + message);
+			// System.out.print("SENT: " + message);
 			output.flush();
 		} 
 		catch (IOException i) {
@@ -89,7 +89,7 @@ public class Client {
 			while (input.ready()) {
                 message += (char) input.read();
             } 
-            System.out.println("RCVD: " + message);
+            // System.out.print("RCVD: " + message);
             currString = message;
 		} catch (IOException i) {
 			System.out.println("ERR: " + i);
@@ -131,7 +131,8 @@ public class Client {
     
     public void parseXML() {
         try {
-            File systemXML = new File("../ds-sim_v3/system.xml");
+			File systemXML = new File("../ds-sim_v3/system.xml");
+			//helps
 
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
