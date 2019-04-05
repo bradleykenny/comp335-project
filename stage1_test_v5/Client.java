@@ -40,7 +40,7 @@ public class Client {
 		// CONNECTION SET-UP
 		send("HELO");
 		currString = receive();
-		send("AUTH BJM");
+		send("AUTH comp335");
 		currString = receive();
 		parseXML();
 		send("REDY");
@@ -71,9 +71,9 @@ public class Client {
 	// SENDING MESSAGES TO THE SERVER
 	public void send(String message) {
 		try {
-			message += "\n";
+			//message += "\n";
 			output.write(message.getBytes());
-			System.out.print("SENT: " + message);
+			System.out.println("SENT: " + message);
 			output.flush();
 		} 
 		catch (IOException i) {
@@ -89,7 +89,7 @@ public class Client {
 			while (input.ready()) {
                 message += (char) input.read();
             } 
-            System.out.print("RCVD: " + message);
+            System.out.println("RCVD: " + message);
             currString = message;
 		} catch (IOException i) {
 			System.out.println("ERR: " + i);
