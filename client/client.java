@@ -7,7 +7,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.*;
 
 
-public class client { 
+public class Client { 
 	private Socket socket = null; 
 	private BufferedReader input = null; 	// USED GET INFO FROM SOCKET
     private DataOutputStream output = null; // USED TO WRITE TO SOCKET
@@ -16,7 +16,7 @@ public class client {
 	private String currString;
 	private Boolean finished = false;
 
-	public client(String address, int port) { 
+	public Client(String address, int port) { 
 		// ESTABLISH CONNECTION 
 		try { 
 			socket = new Socket(address, port); 
@@ -170,7 +170,7 @@ public class client {
 	
 	// THIS IS WHAT RUNS
 	public static void main(String args[]) { 
-		client ourClient = new client("127.0.0.1", 8096);
+		Client ourClient = new Client("127.0.0.1", 8096);
 	}
 }
 
