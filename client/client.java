@@ -69,7 +69,7 @@ public class Client {
 		try {
 			// message += "\n";
 			output.write(message.getBytes());
-			System.out.print("SENT: " + message);
+			// System.out.print("SENT: " + message);
 			output.flush();
 		} catch (IOException i) {
 			System.out.println("ERR: " + i);
@@ -85,7 +85,7 @@ public class Client {
 			while (input.ready()) {
 				message += (char) input.read();
 			}
-			System.out.print("RCVD: " + message);
+			// System.out.print("RCVD: " + message);
 			currString = message;
 		} catch (IOException i) {
 			System.out.println("ERR: " + i);
@@ -125,7 +125,7 @@ public class Client {
 
 	public void parseXML() {
 		try {
-			File systemXML = new File("../ds-sim_v3/system.xml");
+			File systemXML = new File("system.xml");
 
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
