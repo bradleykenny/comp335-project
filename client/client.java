@@ -31,7 +31,12 @@ public class Client {
 		catch(IOException i) { 
 			System.out.println("ERR: " + i); 
 		} 
+	
+		// UNCOMMENT FOR DEBUGGING ONLY
+		// debug(output);
+	} 
 
+	public void run() {
 		// CONNECTION SET-UP
 		send("HELO");
 		currString = receive();
@@ -51,12 +56,8 @@ public class Client {
 				// SEND SCHD
 			}
 		}
-		
-		// UNCOMMENT FOR DEBUGGING ONLY
-		// debug(output);
-
 		quit();
-	} 
+	}
 	
 	// SENDING MESSAGES TO THE SERVER
 	public void send(String message) {
@@ -171,6 +172,7 @@ public class Client {
 	// THIS IS WHAT RUNS
 	public static void main(String args[]) { 
 		Client ourClient = new Client("127.0.0.1", 8096);
+		ourClient.run();
 	}
 }
 
