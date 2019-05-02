@@ -1,4 +1,5 @@
 public class Server {
+	
 	public int id;
 	public String type;
 	public int limit;
