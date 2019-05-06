@@ -17,6 +17,7 @@ public class Client {
 	private int largestServer = 0;
 	private String currString;
 	private Boolean finished = false;
+	private String algorithmType = "ff";
 
 	public Client(String address, int port) {
 		// ESTABLISH CONNECTION
@@ -43,31 +44,6 @@ public class Client {
 		send("REDY");
 		currString = receive();
 
-		send("RESC All");
-		currString = receive();
-		send("OK");
-		
-		currString = receive();
-		while (!currString.equals(".")) {
-			// lar  4   0  143  8 32000 256000
-			// 0	1	2	3	4	5  	  6	
-			String[] serverInfo = currString.split(" ");
-			serverArrList.add(new Server(0,
-				serverInfo[0], 
-				Integer.parseInt(serverInfo[1]), 
-				Integer.parseInt(serverInfo[2]), 
-				Float.parseFloat(serverInfo[3]),
-				Integer.parseInt(serverInfo[4]), 
-				Integer.parseInt(serverInfo[5]),
-				Integer.parseInt(serverInfo[6])
-			));
-			System.out.println("ADDED SERVER");
-			send("OK");
-			currString = receive();
-		}
-
-		System.out.println(serverArrList);
-
 		if (currString.equals("NONE")) {
 			quit();
 		} else {
@@ -80,9 +56,28 @@ public class Client {
 					finished = true;
 					break;
 				}
+
+				send("RESC All");
+				currString = receive();
+				send("OK");
+
+				currString = receive();
+				while (!currString.equals(".")) {
+					// parse incoming text and add Server obj to arraylist
+					String[] serverInfo = currString.split("\\s+");
+					serverArrList.add(new Server(0, serverInfo[0], Integer.parseInt(serverInfo[1]),
+							Integer.parseInt(serverInfo[2]), Float.parseFloat(serverInfo[3]), Integer.parseInt(serverInfo[4]),
+							Integer.parseInt(serverInfo[5]), Integer.parseInt(serverInfo[6])));
+					send("OK");
+					currString = receive();
+				}
+				
+				/* FROM STAGE 1
 				String[] jobData = currString.split("\\s+");
 				int count = Integer.parseInt(jobData[2]);
 				send("SCHD " + count + " " + serverArr[largestServer].type + " " + "0");
+				*/
+				
 				currString = receive();
 			}
 		}
@@ -177,6 +172,15 @@ public class Client {
 	// THIS IS WHAT RUNS
 	public static void main(String args[]) {
 		Client ourClient = new Client("127.0.0.1", 8096);
+		if (args[0].equals("bf")) {
+			if (args[0].equals("bf")) {
+				ourClient.algorithmType = "bf";
+			} else if (args[0].equals("wf")) {
+				ourClient.algorithmType = "wf";
+			}
+		} else {
+			System.out.println("NOTHING");
+		}
 		ourClient.run();
 	}
 }
