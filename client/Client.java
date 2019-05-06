@@ -1,4 +1,6 @@
 import java.net.*;
+import java.util.ArrayList;
+import java.util.Random;
 import java.io.*;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -11,6 +13,7 @@ public class Client {
 	private BufferedReader input = null; // USED GET INFO FROM SOCKET
 	private DataOutputStream output = null; // USED TO WRITE TO SOCKET
 	private Server[] serverArr = new Server[1];
+	private ArrayList<Server> serverArrList = new ArrayList<Server>();
 	private int largestServer = 0;
 	private String currString;
 	private Boolean finished = false;
@@ -40,15 +43,40 @@ public class Client {
 		send("REDY");
 		currString = receive();
 
+		send("RESC All");
+		currString = receive();
+		send("OK");
+		
+		currString = receive();
+		while (!currString.equals(".")) {
+			// lar  4   0  143  8 32000 256000
+			// 0	1	2	3	4	5  	  6	
+			String[] serverInfo = currString.split(" ");
+			serverArrList.add(new Server(0,
+				serverInfo[0], 
+				Integer.parseInt(serverInfo[1]), 
+				Integer.parseInt(serverInfo[2]), 
+				Float.parseFloat(serverInfo[3]),
+				Integer.parseInt(serverInfo[4]), 
+				Integer.parseInt(serverInfo[5]),
+				Integer.parseInt(serverInfo[6])
+			));
+			System.out.println("ADDED SERVER");
+			send("OK");
+			currString = receive();
+		}
+
+		System.out.println(serverArrList);
+
 		if (currString.equals("NONE")) {
 			quit();
 		} else {
 			while (!finished) {
-				if (currString.equals("OK")) {
+				if (currString == "OK") {
 					send("REDY");
 					currString = receive();
 				}
-				if (currString.equals("NONE")) {
+				if (currString == "NONE") {
 					finished = true;
 					break;
 				}
@@ -106,7 +134,7 @@ public class Client {
 
 	public void parseXML() {
 		try {
-			File systemXML = new File("system.xml");
+			File systemXML = new File("../ds-sim/28Apr2019/system.xml");
 
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -126,6 +154,7 @@ public class Client {
 				int d = Integer.parseInt(server.getAttribute("disk"));
 				Server temp = new Server(i, t, l, b, r, c, m, d);
 				serverArr[i] = temp;
+				serverArrList.add(temp);
 				// System.out.println(serverArr[i].coreCount);
 			}
 			largestServer = setLargestServer();

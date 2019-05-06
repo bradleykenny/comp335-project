@@ -5,4 +5,8 @@ public class Cluster {
 	Cluster(Server[] servers) {
 		this.servers = servers;
 	}
+
+	public void bestFit() {
+		
+	}
 }
