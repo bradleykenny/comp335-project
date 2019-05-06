@@ -5,4 +5,6 @@ public class Cluster {
 	Cluster(Server[] servers) {
 		this.servers = servers;
 	}
+
+	
 }
