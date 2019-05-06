@@ -45,23 +45,25 @@ public class Client {
 		currString = receive();
 
 		if (currString.equals("NONE")) {
+			// if there's no jobs, we just want to quit
 			quit();
 		} else {
 			while (!finished) {
+				// finished variable is changed when we receive "NONE"
 				if (currString == "OK") {
 					send("REDY");
-					currString = receive();
+					currString = receive(); // this will be the job information
 				}
 				if (currString == "NONE") {
-					finished = true;
+					finished = true; // time to go...
 					break;
 				}
 				
 				// need to parse the job here
-				String[] jobString = currString.split("\\s+");
+				String[] jobString = currString.split("\\s+"); // break the job information up so we can create obj
 				Server job = new Server(0, jobString[0], Integer.parseInt(jobString[1]),
-				Integer.parseInt(jobString[2]), Float.parseFloat(jobString[3]), Integer.parseInt(jobString[4]),
-				Integer.parseInt(jobString[5]), Integer.parseInt(jobString[6])); 
+					Integer.parseInt(jobString[2]), Float.parseFloat(jobString[3]), Integer.parseInt(jobString[4]),
+					Integer.parseInt(jobString[5]), Integer.parseInt(jobString[6])); 
 				
 				send("RESC All");
 				currString = receive();
@@ -69,12 +71,15 @@ public class Client {
 
 				currString = receive();
 				while (!currString.equals(".")) {
-					// parse incoming text and add Server obj to arraylist
+					// we know the server has stopped sending information when we get "."
+					// therefore, we'll keeping reading information in and adding array til then
+					
 					String[] serverInfo = currString.split("\\s+");
 					
 					Random rand = new Random();
 					int randID = rand.nextInt(10000); // server ID is a random value for now
 					
+					// add server information from string to serverArrList so algorithm performs on all the info
 					serverArrList.add(new Server(randID, serverInfo[0], Integer.parseInt(serverInfo[1]),
 							Integer.parseInt(serverInfo[2]), Float.parseFloat(serverInfo[3]), Integer.parseInt(serverInfo[4]),
 							Integer.parseInt(serverInfo[5]), Integer.parseInt(serverInfo[6])));
@@ -82,7 +87,7 @@ public class Client {
 					currString = receive();
 				}
 
-				// IMPLEMENT OUR ALGORITHM HERE
+				// !!! IMPLEMENT OUR ALGORITHM HERE
 				// send("SCHD" + sendingServer);
 				
 				/* FROM STAGE 1
