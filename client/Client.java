@@ -1,6 +1,6 @@
 import java.net.*;
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.Random; 
 import java.io.*;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -65,7 +65,11 @@ public class Client {
 				while (!currString.equals(".")) {
 					// parse incoming text and add Server obj to arraylist
 					String[] serverInfo = currString.split("\\s+");
-					serverArrList.add(new Server(0, serverInfo[0], Integer.parseInt(serverInfo[1]),
+					
+					Random rand = new Random();
+					int randID = rand.nextInt(10000); // server ID is a random value for now
+					
+					serverArrList.add(new Server(randID, serverInfo[0], Integer.parseInt(serverInfo[1]),
 							Integer.parseInt(serverInfo[2]), Float.parseFloat(serverInfo[3]), Integer.parseInt(serverInfo[4]),
 							Integer.parseInt(serverInfo[5]), Integer.parseInt(serverInfo[6])));
 					send("OK");
