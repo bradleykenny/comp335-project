@@ -56,7 +56,13 @@ public class Client {
 					finished = true;
 					break;
 				}
-
+				
+				// need to parse the job here
+				String[] jobString = currString.split("\\s+");
+				Server job = new Server(0, jobString[0], Integer.parseInt(jobString[1]),
+				Integer.parseInt(jobString[2]), Float.parseFloat(jobString[3]), Integer.parseInt(jobString[4]),
+				Integer.parseInt(jobString[5]), Integer.parseInt(jobString[6])); 
+				
 				send("RESC All");
 				currString = receive();
 				send("OK");
@@ -75,6 +81,9 @@ public class Client {
 					send("OK");
 					currString = receive();
 				}
+
+				// IMPLEMENT OUR ALGORITHM HERE
+				// send("SCHD" + sendingServer);
 				
 				/* FROM STAGE 1
 				String[] jobData = currString.split("\\s+");
