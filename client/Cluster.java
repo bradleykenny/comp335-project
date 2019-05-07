@@ -2,17 +2,21 @@ import java.util.ArrayList;
 
 public class Cluster {
 	
-	private ArrayList<Server> servers = new ArrayList();
+	private ArrayList<Server> servers = new ArrayList<Server>();
+	Server[] xmlServers;
 
-	Cluster(ArrayList<Server> servers) {
+	Cluster(ArrayList<Server> servers, Server[] xmlServers) {
 		this.servers = servers;
+		this.xmlServers = xmlServers;
 	}
 
+	// TODO: refactor this to be better / more efficient
 	public Server bestFit(Server job) {
 		int bestFit = Integer.MAX_VALUE;
 		int minAvail = Integer.MAX_VALUE;
-		Server best;
+		Server best = null;
 		Boolean found = false;
+
 		for (Server serv : servers) {
 			if (serv.coreCount > job.coreCount && serv.disk > job.disk && serv.memory > job.memory) {
 				int fitnessValue = serv.coreCount - job.coreCount;
@@ -26,8 +30,18 @@ public class Cluster {
 		}
 		if (found) {
 			return best;
-		}
-		return "";
+		} else {
+			// go through xml file and find the server that fits best prior to other load
+			Server xmlBest = null;
+			for (Server serv : xmlServers) {
+				if (serv.coreCount > job.coreCount && serv.disk > job.disk && serv.memory > job.memory) {
+					int fitnessValue = serv.coreCount - job.coreCount;
+					if (fitnessValue < bestFit) {
+						xmlBest = serv;
+					}
+				}
+			} return xmlBest;
+		} 
 	}
 
 	public void firstFit() {

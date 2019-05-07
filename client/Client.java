@@ -89,7 +89,7 @@ public class Client {
 					currString = receive();
 				}
 
-				Cluster ourCluster = new Cluster(serverArrList);
+				Cluster ourCluster = new Cluster(serverArrList, serverArr);
 				// !!! IMPLEMENT OUR ALGORITHM HERE
 				// send("SCHD" + sendingServer);
 
@@ -193,14 +193,16 @@ public class Client {
 	// THIS IS WHAT RUNS
 	public static void main(String args[]) {
 		Client ourClient = new Client("127.0.0.1", 8096);
-		if (args[0].equals("bf")) {
-			if (args[0].equals("bf")) {
+		
+		// check for "-a" cmd argument and set algorithm type accordingly
+		if (args[0].equals("-a")) {
+			if (args[1].equals("bf")) {
 				ourClient.algorithmType = "bf";
-			} else if (args[0].equals("wf")) {
+			} else if (args[1].equals("wf")) {
 				ourClient.algorithmType = "wf";
+			} else if (args[1].equals("ff")) {
+				ourClient.algorithmType = "ff";
 			}
-		} else {
-			System.out.println("NOTHING");
 		}
 		ourClient.run();
 	}
