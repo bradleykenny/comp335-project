@@ -81,8 +81,8 @@ public class Client {
 
 					// add server information from string to serverArrList so algorithm performs on
 					// all the info
-					serverArrList.add(new Server(randID, serverInfo[0], Integer.parseInt(serverInfo[1]),
-							Integer.parseInt(serverInfo[2]), Float.parseFloat(serverInfo[3]),
+					serverArrList.add(new Server(serverInfo[0], Integer.parseInt(serverInfo[1]),
+							Integer.parseInt(serverInfo[2]), Integer.parseInt(serverInfo[3]),
 							Integer.parseInt(serverInfo[4]), Integer.parseInt(serverInfo[5]),
 							Integer.parseInt(serverInfo[6])));
 					send("OK");
