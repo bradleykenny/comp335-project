@@ -9,4 +9,8 @@ public class Cluster {
 	public void bestFit() {
 		
 	}
+
+	public void firstFit() {
+		
+	}
 }
