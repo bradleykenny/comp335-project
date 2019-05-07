@@ -1,6 +1,6 @@
 import java.net.*;
 import java.util.ArrayList;
-import java.util.Random; 
+import java.util.Random;
 import java.io.*;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -58,13 +58,13 @@ public class Client {
 					finished = true; // time to go...
 					break;
 				}
-				
+
 				// need to parse the job here
 				String[] jobString = currString.split("\\s+"); // break the job information up so we can create obj
-				Server job = new Server(0, jobString[0], Integer.parseInt(jobString[1]),
-					Integer.parseInt(jobString[2]), Float.parseFloat(jobString[3]), Integer.parseInt(jobString[4]),
-					Integer.parseInt(jobString[5]), Integer.parseInt(jobString[6])); 
-				
+				Server job = new Server(0, jobString[0], Integer.parseInt(jobString[1]), Integer.parseInt(jobString[2]),
+						Float.parseFloat(jobString[3]), Integer.parseInt(jobString[4]), Integer.parseInt(jobString[5]),
+						Integer.parseInt(jobString[6]));
+
 				send("RESC All");
 				currString = receive();
 				send("OK");
@@ -73,29 +73,32 @@ public class Client {
 				while (!currString.equals(".")) {
 					// we know the server has stopped sending information when we get "."
 					// therefore, we'll keeping reading information in and adding array til then
-					
+
 					String[] serverInfo = currString.split("\\s+");
-					
+
 					Random rand = new Random();
 					int randID = rand.nextInt(10000); // server ID is a random value for now
-					
-					// add server information from string to serverArrList so algorithm performs on all the info
+
+					// add server information from string to serverArrList so algorithm performs on
+					// all the info
 					serverArrList.add(new Server(randID, serverInfo[0], Integer.parseInt(serverInfo[1]),
-							Integer.parseInt(serverInfo[2]), Float.parseFloat(serverInfo[3]), Integer.parseInt(serverInfo[4]),
-							Integer.parseInt(serverInfo[5]), Integer.parseInt(serverInfo[6])));
+							Integer.parseInt(serverInfo[2]), Float.parseFloat(serverInfo[3]),
+							Integer.parseInt(serverInfo[4]), Integer.parseInt(serverInfo[5]),
+							Integer.parseInt(serverInfo[6])));
 					send("OK");
 					currString = receive();
 				}
 
+				Cluster ourCluster = new Cluster(serverArrList);
 				// !!! IMPLEMENT OUR ALGORITHM HERE
 				// send("SCHD" + sendingServer);
-				
-				/* FROM STAGE 1
-				String[] jobData = currString.split("\\s+");
-				int count = Integer.parseInt(jobData[2]);
-				send("SCHD " + count + " " + serverArr[largestServer].type + " " + "0");
-				*/
-				
+
+				/*
+				 * FROM STAGE 1 String[] jobData = currString.split("\\s+"); int count =
+				 * Integer.parseInt(jobData[2]); send("SCHD " + count + " " +
+				 * serverArr[largestServer].type + " " + "0");
+				 */
+
 				currString = receive();
 			}
 		}
