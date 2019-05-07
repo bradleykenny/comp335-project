@@ -1,8 +1,10 @@
+import java.util.ArrayList;
+
 public class Cluster {
 	
-	private Server[] servers;
+	private ArrayList<Server> servers = new ArrayList();
 
-	Cluster(Server[] servers) {
+	Cluster(ArrayList<Server> servers) {
 		this.servers = servers;
 	}
 
