@@ -11,7 +11,6 @@ public class Cluster {
 	}
 
 	public void firstFit() {
-		//
 		// A job gets read; read server state info: 
 		// type | id | state | time | cores | memory | space
 		// FOR each server type, from smallest to largest
