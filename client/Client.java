@@ -93,12 +93,19 @@ public class Client {
 				// !!! IMPLEMENT OUR ALGORITHM HERE
 				// send("SCHD" + sendingServer);
 
+				// TODO: fix so this works with allToLargest
+				Server sendTo = null;
+				if (algorithmType.equals("bf")) {
+					sendTo = ourCluster.bestFit(job);
+				}
+
 				/*
 				 * FROM STAGE 1 String[] jobData = currString.split("\\s+"); int count =
 				 * Integer.parseInt(jobData[2]); send("SCHD " + count + " " +
 				 * serverArr[largestServer].type + " " + "0");
 				 */
 
+				send("SCHD " + job.id + " " + sendTo.type + " " + sendTo.id);
 				currString = receive();
 			}
 		}
