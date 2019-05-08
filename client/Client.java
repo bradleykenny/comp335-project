@@ -59,17 +59,15 @@ public class Client {
 		} else {
 			while (!finished) {
 				// finished variable is changed when we receive "NONE".
-				if (currString == "OK") {
+				if (currString.equals("OK")) {
 					send("REDY");
 					currString = receive(); // Expected to be job information.
 				}
-				if (currString == "NONE") {
+				if (currString.equals("NONE")) {
 					// Time to go...
 					finished = true; 
 					break;
 				}
-				
-				System.out.println(currString); // Have OK here on second loop for some reason. Expect job information.
 
 				// Parse job information received here.
 				String[] jobString = currString.split("\\s+"); // break the job information up so we can create obj
