@@ -18,13 +18,17 @@ public class Client {
 	private String currString;
 	private Boolean finished = false;
 	private String algorithmType = "ff";
+	
+	/*
+	 * The constructor for the class. Need an address and port to set-up the connection
+	 * with the server. Also sets up an input and output datastream so we can send/
+	 * receive data from the server.
+	 */ 
 
 	public Client(String address, int port) {
 		// ESTABLISH CONNECTION
 		try {
 			socket = new Socket(address, port);
-			// System.out.println("Connected.");
-
 			input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			output = new DataOutputStream(socket.getOutputStream());
 		} catch (UnknownHostException u) {
@@ -34,6 +38,12 @@ public class Client {
 		}
 	}
 
+	/*
+	 * Contained in this method is everything that we would want to happen when
+	 * running the protocol. Expectation is that run() will be called when we want
+	 * the sequence of interaction to occur with the server. run() requires
+	 * interaction with a server model.
+	 */
 	public void run() {
 		// CONNECTION SET-UP
 		send("HELO");
@@ -45,63 +55,58 @@ public class Client {
 		currString = receive();
 
 		if (currString.equals("NONE")) {
-			// if there's no jobs, we just want to quit
+			// No jobs, nothing left to do.
 			quit();
 		} else {
 			while (!finished) {
-				// finished variable is changed when we receive "NONE"
+				// finished variable is changed when we receive "NONE".
 				if (currString == "OK") {
 					send("REDY");
-					currString = receive(); // this will be the job information
+					currString = receive(); // Expected to be job information.
 				}
 				if (currString == "NONE") {
-					finished = true; // time to go...
+					// Time to go...
+					finished = true; 
 					break;
 				}
-
-				// need to parse the job here
+				
+				// Parse job information received here.
 				String[] jobString = currString.split("\\s+"); // break the job information up so we can create obj
 				Server job = new Server(0, jobString[0], Integer.parseInt(jobString[1]), Integer.parseInt(jobString[2]),
 						Float.parseFloat(jobString[3]), Integer.parseInt(jobString[4]), Integer.parseInt(jobString[5]),
 						Integer.parseInt(jobString[6]));
 
-				send("RESC All");
+				send("RESC All"); // Get all server information. 
 				currString = receive();
 				send("OK");
 
 				currString = receive();
 				while (!currString.equals(".")) {
-					// we know the server has stopped sending information when we get "."
-					// therefore, we'll keeping reading information in and adding array til then
+					// We know the server has stopped sending information when we get ".".
+					// Therefore, we'll keeping reading information in and adding array until then.
 
 					String[] serverInfo = currString.split("\\s+");
 
-					Random rand = new Random();
-					int randID = rand.nextInt(10000); // server ID is a random value for now
-
-					// add server information from string to serverArrList so algorithm performs on
-					// all the info
-					serverArrList.add(new Server(serverInfo[0], Integer.parseInt(serverInfo[1]),
-							Integer.parseInt(serverInfo[2]), Integer.parseInt(serverInfo[3]),
-							Integer.parseInt(serverInfo[4]), Integer.parseInt(serverInfo[5]),
-							Integer.parseInt(serverInfo[6])));
+					// Adding Server information to ArrayList for later use. 
+					serverArrList.add(
+							new Server(serverInfo[0], Integer.parseInt(serverInfo[1]), Integer.parseInt(serverInfo[2]),
+									Integer.parseInt(serverInfo[3]), Integer.parseInt(serverInfo[4]),
+									Integer.parseInt(serverInfo[5]), Integer.parseInt(serverInfo[6])));
 					send("OK");
 					currString = receive();
 				}
 
 				Cluster ourCluster = new Cluster(serverArrList, serverArr);
-				// !!! IMPLEMENT OUR ALGORITHM HERE
-				// send("SCHD" + sendingServer);
 
-				// TODO: fix so this works with allToLargest
+				// TODO: Implement all our solutions here.
 				Server sendTo = null;
 				if (algorithmType.equals("bf")) {
 					sendTo = ourCluster.bestFit(job);
 					send("SCHD " + job.id + " " + sendTo.type + " " + sendTo.id);
 				} else {
 					// FROM STAGE 1
-					String[] jobData = currString.split("\\s+"); 
-					int count = Integer.parseInt(jobData[2]); 
+					String[] jobData = currString.split("\\s+");
+					int count = Integer.parseInt(jobData[2]);
 					send("SCHD " + count + " " + serverArr[largestServer].type + " " + "0");
 				}
 
@@ -112,7 +117,7 @@ public class Client {
 		quit();
 	}
 
-	// SENDING MESSAGES TO THE SERVER
+	// Used to send messages from the server. Takes the message as a parameter.
 	public void send(String message) {
 		try {
 			output.write(message.getBytes());
@@ -123,7 +128,7 @@ public class Client {
 		}
 	}
 
-	// RECEIVING MESSAGES FROM THE SOCKET
+	// Used to receive messages from the server.
 	public String receive() {
 		String message = "";
 		try {
@@ -140,7 +145,8 @@ public class Client {
 		return message;
 	}
 
-	// TERMINATES CONNECTIONS AND SENDS/RECEIVES QUIT MESSAGES
+
+	// Terminate the connection with the server.
 	public void quit() {
 		try {
 			send("QUIT");
@@ -155,6 +161,11 @@ public class Client {
 		}
 	}
 
+	/*
+	 * Used to parse information from the XML used in association with the
+	 * server. We need to be able to break up the information and put it 
+	 * into a Server object so that we can use it. 
+	 */
 	public void parseXML() {
 		try {
 			File systemXML = new File("../ds-sim/28Apr2019/system.xml");
@@ -176,7 +187,6 @@ public class Client {
 				int m = Integer.parseInt(server.getAttribute("memory"));
 				int d = Integer.parseInt(server.getAttribute("disk"));
 				Server temp = new Server(i, t, l, b, r, c, m, d);
-				serverArr[i] = temp;
 				serverArrList.add(temp);
 				// System.out.println(serverArr[i].coreCount);
 			}
@@ -187,6 +197,10 @@ public class Client {
 
 	}
 
+	/* 
+	 * Using the information from the XML file, we want to determine which Server
+	 * object is the largest and return that.
+	 */
 	public int setLargestServer() {
 		int largestServer = serverArr[0].id;
 		for (int i = 0; i < serverArr.length; i++) {
@@ -197,20 +211,23 @@ public class Client {
 		return largestServer;
 	}
 
-	// THIS IS WHAT RUNS
+	// This is our method that will be called when running the program from terminal. 
 	public static void main(String args[]) {
 		Client ourClient = new Client("127.0.0.1", 8096);
-		
-		// check for "-a" cmd argument and set algorithm type accordingly
-		if (args[0].equals("-a")) {
-			if (args[1].equals("bf")) {
-				ourClient.algorithmType = "bf";
-			} else if (args[1].equals("wf")) {
-				ourClient.algorithmType = "wf";
-			} else if (args[1].equals("ff")) {
-				ourClient.algorithmType = "ff";
+
+		// Check for "-a" cmd argument and set algorithm type accordingly.
+		if (args[0] != null) {
+			if (args[0].equals("-a")) {
+				if (args[1].equals("bf")) {
+					ourClient.algorithmType = "bf";
+				} else if (args[1].equals("wf")) {
+					ourClient.algorithmType = "wf";
+				} else if (args[1].equals("ff")) {
+					ourClient.algorithmType = "ff";
+				}
 			}
 		}
+
 		ourClient.run();
 	}
 }

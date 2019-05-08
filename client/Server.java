@@ -1,15 +1,13 @@
 public class Server {
 	
-	public int id = -1;
-	public String type = "";
-	public int limit = -1;
-	public int bootupTime = -1;
-	public float rate = -1;
-	public int coreCount = -1;
-	public int memory = -1;
-	public int disk = -1;
-
-	// these values are found using RESC
+	public int id;
+	public String type;
+	public int limit;
+	public int bootupTime;
+	public float rate;
+	public int coreCount;
+	public int memory;
+	public int disk;
 	public int state;
 	public int availableTime;
 
