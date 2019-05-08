@@ -97,15 +97,15 @@ public class Client {
 				Server sendTo = null;
 				if (algorithmType.equals("bf")) {
 					sendTo = ourCluster.bestFit(job);
+					send("SCHD " + job.id + " " + sendTo.type + " " + sendTo.id);
+				} else {
+					// FROM STAGE 1
+					String[] jobData = currString.split("\\s+"); 
+					int count = Integer.parseInt(jobData[2]); 
+					send("SCHD " + count + " " + serverArr[largestServer].type + " " + "0");
 				}
 
-				/*
-				 * FROM STAGE 1 String[] jobData = currString.split("\\s+"); int count =
-				 * Integer.parseInt(jobData[2]); send("SCHD " + count + " " +
-				 * serverArr[largestServer].type + " " + "0");
-				 */
-
-				send("SCHD " + job.id + " " + sendTo.type + " " + sendTo.id);
+				// send("SCHD " + job.id + " " + sendTo.type + " " + sendTo.id);
 				currString = receive();
 			}
 		}
