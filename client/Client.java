@@ -1,6 +1,5 @@
 import java.net.*;
 import java.util.ArrayList;
-import java.util.Random;
 import java.io.*;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -70,6 +69,8 @@ public class Client {
 					break;
 				}
 				
+				System.out.println(currString); // Have OK here on second loop for some reason. Expect job information.
+
 				// Parse job information received here.
 				String[] jobString = currString.split("\\s+"); // break the job information up so we can create obj
 				Server job = new Server(0, jobString[0], Integer.parseInt(jobString[1]), Integer.parseInt(jobString[2]),
