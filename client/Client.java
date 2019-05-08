@@ -25,7 +25,7 @@ public class Client {
 	 */ 
 
 	public Client(String address, int port) {
-		// ESTABLISH CONNECTION
+		// Establish a connection with the server.
 		try {
 			socket = new Socket(address, port);
 			input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -44,7 +44,7 @@ public class Client {
 	 * interaction with a server model.
 	 */
 	public void run() {
-		// CONNECTION SET-UP
+		// Set-up of the connection.
 		send("HELO");
 		currString = receive();
 		send("AUTH " + System.getProperty("user.name"));
@@ -71,9 +71,8 @@ public class Client {
 
 				// Parse job information received here.
 				String[] jobString = currString.split("\\s+"); // break the job information up so we can create obj
-				Server job = new Server(0, jobString[0], Integer.parseInt(jobString[1]), Integer.parseInt(jobString[2]),
-						Float.parseFloat(jobString[3]), Integer.parseInt(jobString[4]), Integer.parseInt(jobString[5]),
-						Integer.parseInt(jobString[6]));
+				Job job = new Job(Integer.parseInt(jobString[0]), Integer.parseInt(jobString[1]), Integer.parseInt(jobString[2]),
+						Integer.parseInt(jobString[3]), Integer.parseInt(jobString[4]), Integer.parseInt(jobString[5]));
 
 				send("RESC All"); // Get all server information. 
 				currString = receive();
@@ -150,7 +149,7 @@ public class Client {
 		try {
 			send("QUIT");
 			currString = receive();
-			if (currString == "QUIT") {
+			if (currString.equals("QUIT")) {
 				input.close();
 				output.close();
 				socket.close();

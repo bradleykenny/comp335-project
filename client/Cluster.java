@@ -11,15 +11,15 @@ public class Cluster {
 	}
 
 	// TODO: refactor this to be better / more efficient
-	public Server bestFit(Server job) {
+	public Server bestFit(Job job) {
 		int bestFit = Integer.MAX_VALUE;
 		int minAvail = Integer.MAX_VALUE;
 		Server best = null;
 		Boolean found = false;
 
 		for (Server serv : servers) {
-			if (serv.coreCount > job.coreCount && serv.disk > job.disk && serv.memory > job.memory) {
-				int fitnessValue = serv.coreCount - job.coreCount;
+			if (serv.coreCount > job.cpuCores && serv.disk > job.disk && serv.memory > job.memory) {
+				int fitnessValue = serv.coreCount - job.cpuCores;
 				if ((fitnessValue < bestFit) || (fitnessValue == bestFit && serv.availableTime < minAvail)) {
 					bestFit = fitnessValue;
 					minAvail = serv.availableTime;
@@ -34,8 +34,8 @@ public class Cluster {
 			// go through xml file and find the server that fits best prior to other load
 			Server xmlBest = null;
 			for (Server serv : xmlServers) {
-				if (serv.coreCount > job.coreCount && serv.disk > job.disk && serv.memory > job.memory) {
-					int fitnessValue = serv.coreCount - job.coreCount;
+				if (serv.coreCount > job.cpuCores && serv.disk > job.disk && serv.memory > job.memory) {
+					int fitnessValue = serv.coreCount - job.cpuCores;
 					if (fitnessValue < bestFit) {
 						xmlBest = serv;
 					}
@@ -44,7 +44,7 @@ public class Cluster {
 		} 
 	}
 
-	public void firstFit(Server job) {
+	public void firstFit(Job job) {
 		// A job gets read; read server state info: 
 		// type | id | state | time | cores | memory | space
 		// FOR each server type, from smallest to largest
