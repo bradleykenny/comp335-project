@@ -71,8 +71,8 @@ public class Client {
 
 				// Parse job information received here.
 				String[] jobString = currString.split("\\s+"); // break the job information up so we can create obj
-				Job job = new Job(Integer.parseInt(jobString[0]), Integer.parseInt(jobString[1]), Integer.parseInt(jobString[2]),
-						Integer.parseInt(jobString[3]), Integer.parseInt(jobString[4]), Integer.parseInt(jobString[5]));
+				Job job = new Job(Integer.parseInt(jobString[1]), Integer.parseInt(jobString[2]), Integer.parseInt(jobString[3]),
+						Integer.parseInt(jobString[4]), Integer.parseInt(jobString[5]), Integer.parseInt(jobString[6]));
 
 				send("RESC All"); // Get all server information. 
 				currString = receive();
