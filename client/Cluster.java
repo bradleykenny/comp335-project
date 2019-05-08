@@ -48,7 +48,7 @@ public class Cluster {
 		// A job gets read; read server state info: 
 		// type | id | state | time | cores | memory | space
 		// FOR each server type, from smallest to largest
-		for (Server serv : servers) {
+		for (Server serv : servers) { }
 		/* Server types, types my be jumbled, i.e. sort from smallest to largest*/	
 		// FOR each server types (tiny, small, medium, large, xlarge?)
 			
