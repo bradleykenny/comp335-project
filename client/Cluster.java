@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.*;
 
 public class Cluster {
 	
@@ -44,20 +45,27 @@ public class Cluster {
 		} 
 	}
 
-	public void firstFit(Job job) {
-		// A job gets read; read server state info: 
+	public Server firstFit(Job job) {
 		// type | id | state | time | cores | memory | space
-		// FOR each server type, from smallest to largest
-		for (Server serv : servers) { }
-		/* Server types, types my be jumbled, i.e. sort from smallest to largest*/	
-		// FOR each server types (tiny, small, medium, large, xlarge?)
-			
-		// 		FOR each server
-		// 			IF server has enough cores to run the job
-		// 				RETURN server
-		// 			END IF
-		// 		END FOR
-		// END FOR
-		// RETURN first "Active" server with enough cores (resource capacity) ro run the job
+		Server serv;
+		Server types;
+		Server first = null;
+
+		/*
+		for(Server serv : servers)
+		{
+			//for(serv.coreCount < )
+			for(int i = 0; i < serv.coreCount; i++)
+			{
+				Iterator itr = servers.iterator();
+					if (serv.coreCount >= job.cpuCores && serv.disk >= job.disk && serv.memory >= job.memory) 
+					{
+						return first;
+					}
+				}
+			}
+		}
+		*/
+		return null;
 	}
 }
