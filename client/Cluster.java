@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.*;
 
 public class Cluster {
 	
@@ -21,7 +22,7 @@ public class Cluster {
 		Boolean found = false;
 
 		for (Server serv : servers) {
-			if (serv.coreCount > job.cpuCores && serv.disk > job.disk && serv.memory > job.memory) {
+			if (serv.coreCount >= job.cpuCores && serv.disk >= job.disk && serv.memory >= job.memory) {
 				int fitnessValue = serv.coreCount - job.cpuCores;
 				if ((fitnessValue < bestFit) || (fitnessValue == bestFit && serv.availableTime < minAvail)) {
 					bestFit = fitnessValue;
@@ -50,20 +51,37 @@ public class Cluster {
 		} 
 	}
 
-	public void firstFit(Job job) {
-		// A job gets read; read server state info: 
-		// type | id | state | time | cores | memory | space
-		// FOR each server type, from smallest to largest
-		for (Server serv : servers) { }
-		/* Server types, types my be jumbled, i.e. sort from smallest to largest*/	
-		// FOR each server types (tiny, small, medium, large, xlarge?)
-			
-		// 		FOR each server
-		// 			IF server has enough cores to run the job
-		// 				RETURN server
-		// 			END IF
-		// 		END FOR
-		// END FOR
-		// RETURN first "Active" server with enough cores (resource capacity) ro run the job
+	public Server firstFit(Job job) {
+		// type | id | state | time | cores | memory | space |
+		ArrayList<Integer> serverTypes = new ArrayList<Integer>();
+
+		for(Server serv : servers){
+			if(serverTypes.contains(serv.coreCount)==false){
+				serverTypes.add(serv.coreCount);
+			}
+		}
+		
+
+		return null;
+
+		/*
+		for(Server serv : servers)
+		{
+			int max = 0;
+			for(int i = 0; i < servers.size(); i++)
+			{
+				if(serv.coreCount > 0)
+				{
+					max = serv.coreCount;
+				}				
+			}
+			for(int j = 0; j < max; j++)
+			{
+				
+			}
+		}
+		
+		return null;
+		*/
 	}
 }
