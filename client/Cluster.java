@@ -88,6 +88,6 @@ public class Cluster {
 			}
 			*/
 		}
-		return firstActive;;
+		return firstActive;
 	}
 }
