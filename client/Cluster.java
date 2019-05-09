@@ -27,12 +27,14 @@ public class Cluster {
 			if (serv.coreCount >= job.cpuCores && serv.disk >= job.disk && serv.memory >= job.memory) {
 				int fitnessValue = serv.coreCount - job.cpuCores;
 				if ((fitnessValue < bestFit) || (fitnessValue == bestFit && serv.availableTime < minAvail)) {
+					// this returns the wrong one when there is a server larger than this
 					if (serv.state == 0 || serv.state == 2) {
 						bestFit = fitnessValue;
 						minAvail = serv.availableTime;
 						found = true;
 						best = serv;
 					} else {
+						System.out.println("TYPE: " + serv.type);
 						bestDontCare = serv;
 					}
 				}
