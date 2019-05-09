@@ -103,7 +103,21 @@ public class Client {
 					System.out.println("sendTo" + sendTo);
 					System.out.println("job" + job);
 					send("SCHD " + job.id + " " + sendTo.type + " " + sendTo.id);
-				} else {
+				} else if (algorithmType.equals("ff")){
+					sendTo = ourCluster.firstFit(job);
+					System.out.println("sendTo" + sendTo);
+					System.out.println("job" + job);
+					send("SCHD " + job.id + " " + sendTo.type + " " + sendTo.id);
+				} 
+				/*
+				else if (algorithmType.equals("wf")){
+					sendTo = ourCluster.worstFit(job);
+					System.out.println("sendTo" + sendTo);
+					System.out.println("job" + job);
+					send("SCHD " + job.id + " " + sendTo.type + " " + sendTo.id);
+				}
+				*/
+				else {
 					// FROM STAGE 1
 					String[] jobData = currString.split("\\s+");
 					int count = Integer.parseInt(jobData[2]);

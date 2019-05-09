@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.*;
 
 public class Cluster {
 	
@@ -61,37 +60,36 @@ public class Cluster {
 		// } return xmlBest;
 	}
 
-	public Server firstFit(Job job) {
-		// type | id | state | time | cores | memory | space |
+	public Server firstFit(Job job)
+	{
 		ArrayList<Integer> serverTypes = new ArrayList<Integer>();
+		Server first = null;
+		Server firstActive = null;
 
-		for(Server serv : servers){
-			if(serverTypes.contains(serv.coreCount)==false){
-				serverTypes.add(serv.coreCount);
-			}
-		}
-		
-
-		return null;
-
-		/*
 		for(Server serv : servers)
 		{
-			int max = 0;
-			for(int i = 0; i < servers.size(); i++)
+			for(int i = 0; i < 8; i++)
 			{
-				if(serv.coreCount > 0)
+				if(serv.coreCount==Math.pow(2, i))
 				{
-					max = serv.coreCount;
-				}				
+					if (serv.coreCount >= job.cpuCores && serv.disk >= job.disk && serv.memory >= job.memory) 
+					{
+						first = serv;
+						if(first.state == 0 || first.state == 2)
+						{
+							firstActive = first;
+						}
+						return first;
+					}
+				}
 			}
-			for(int j = 0; j < max; j++)
+			/*
+			if(serverTypes.contains(serv.coreCount)==false)
 			{
-				
+				serverTypes.add(serv.coreCount);
 			}
+			*/
 		}
-		
-		return null;
-		*/
+		return firstActive;
 	}
 }
