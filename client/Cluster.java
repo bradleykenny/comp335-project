@@ -60,4 +60,31 @@ public class Cluster {
 		// END FOR
 		// RETURN first "Active" server with enough cores (resource capacity) ro run the job
 	}
+
+	public Server worstFit(Job job){
+		int worstFit = Integer.MIN_VALUE;
+		int altFit = Integer.MIN_VALUE;
+		Server worst = null;
+		Boolean found = false;
+		ArrayList<Integer> coreCounts = new ArrayList<Integer>();
+		for (Server serv : xmlServers){
+			if(coreCounts.contains(serv.coreCount)==false){
+				coreCounts.add(serv.coreCount);
+			}
+		}
+		for(Server serv : xmlServers){
+			for(Integer i : coreCounts){
+				if(serv.coreCount==i && serv.coreCount > job.cpuCores && serv.disk > job.disk && serv.memory > job.memory){
+					int fitnessValue = serv.coreCount-job.cpuCores;
+					if(fitnessValue>worstFit && serv.state==2){
+						worstFit = fitnessValue;
+					}
+					else if(fitnessValue>altFit){
+
+					}
+				}
+			}
+		}
+
+	}
 }

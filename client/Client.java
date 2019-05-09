@@ -105,7 +105,7 @@ public class Client {
 					// FROM STAGE 1
 					String[] jobData = currString.split("\\s+");
 					int count = Integer.parseInt(jobData[2]);
-					send("SCHD " + count + " " + serverArr[largestServer].type + " " + "0");
+					send("SCHD " + count + " " + serverArr[largestServer].type + " " + "0");	
 				}
 
 				// send("SCHD " + job.id + " " + sendTo.type + " " + sendTo.id);
