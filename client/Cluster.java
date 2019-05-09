@@ -81,12 +81,6 @@ public class Cluster {
 					}
 				}
 			}
-			/*
-			if(serverTypes.contains(serv.coreCount)==false)
-			{
-				serverTypes.add(serv.coreCount);
-			}
-			*/
 		}
 		return firstActive;
 	}
