@@ -65,26 +65,44 @@ public class Cluster {
 		int worstFit = Integer.MIN_VALUE;
 		int altFit = Integer.MIN_VALUE;
 		Server worst = null;
-		Boolean found = false;
+		Server alt = null;
+		Boolean worstFound = false;
+		Boolean altFound = false;
+		Server worstIgnore = null;
 		ArrayList<Integer> coreCounts = new ArrayList<Integer>();
 		for (Server serv : xmlServers){
 			if(coreCounts.contains(serv.coreCount)==false){
 				coreCounts.add(serv.coreCount);
 			}
 		}
-		for(Server serv : xmlServers){
-			for(Integer i : coreCounts){
+		for(Integer i : coreCounts){
+			for(Server serv : xmlServers){
 				if(serv.coreCount==i && serv.coreCount > job.cpuCores && serv.disk > job.disk && serv.memory > job.memory){
 					int fitnessValue = serv.coreCount-job.cpuCores;
 					if(fitnessValue>worstFit && serv.state==2){
 						worstFit = fitnessValue;
+						worstFound = true;
+						worst = serv;
 					}
-					else if(fitnessValue>altFit){
-
+					if(fitnessValue>worstFit && serv.state==3){
+						worstIgnore = serv;
+					}
+					else if(fitnessValue>altFit && job.estRuntime<serv.availableTime){
+						altFit = fitnessValue;
+						altFound = true;
+						alt = serv;
 					}
 				}
 			}
 		}
-
+		if(worstFound==true){
+			return worst;
+		}
+		else if(altFound == true){
+			return alt;
+		}
+		else{
+			return worstIgnore;
+		}
 	}
 }
