@@ -16,38 +16,45 @@ public class Cluster {
 	public Server bestFit(Job job) {
 		int bestFit = Integer.MAX_VALUE;
 		int minAvail = Integer.MAX_VALUE;
+		
 		Server best = null;
 		Server bestDontCare = null;
+		
 		Boolean found = false;
 
 		for (Server serv : servers) {
-			if (serv.coreCount > job.cpuCores && serv.disk > job.disk && serv.memory > job.memory) {
+			if (serv.coreCount >= job.cpuCores && serv.disk >= job.disk && serv.memory >= job.memory) {
 				int fitnessValue = serv.coreCount - job.cpuCores;
 				if ((fitnessValue < bestFit) || (fitnessValue == bestFit && serv.availableTime < minAvail)) {
-					bestFit = fitnessValue;
-					minAvail = serv.availableTime;
-					found = true;
-					best = serv;
+					if (serv.state == 3) {
+						bestFit = fitnessValue;
+						found = true;
+						best = serv;
+					} else {
+						bestDontCare = serv;
+					}
 				}
 			}
 		}
 		if (found) {
 			return best;
 		} else {
-			// go through xml file and find the server that fits best prior to other load
-			System.out.println(xmlServers);
-			Server xmlBest = null;
-			for (Server serv : xmlServers) {
-				if (serv.coreCount > job.cpuCores && serv.disk > job.disk && serv.memory > job.memory) {
-					int fitnessValue = serv.coreCount - job.cpuCores;
-					if (fitnessValue < bestFit) {
-						bestFit = fitnessValue;
-						xmlBest = serv;
-						System.out.println("GOT EM");
-					}
-				}
-			} return xmlBest;
+			return bestDontCare;
 		} 
+
+		// // go through xml file and find the server that fits best prior to other load
+		// System.out.println(xmlServers);
+		// Server xmlBest = null;
+		// for (Server serv : xmlServers) {
+		// 	if (serv.coreCount > job.cpuCores && serv.disk > job.disk && serv.memory > job.memory) {
+		// 		int fitnessValue = serv.coreCount - job.cpuCores;
+		// 		if (fitnessValue < bestFit) {
+		// 			bestFit = fitnessValue;
+		// 			xmlBest = serv;
+		// 			System.out.println("GOT EM");
+		// 		}
+		// 	}
+		// } return xmlBest;
 	}
 
 	public void firstFit(Job job) {
