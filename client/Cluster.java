@@ -10,11 +10,14 @@ public class Cluster {
 		this.xmlServers = xmlServers;
 	}
 
+	// 0=inactive, 1=booting, 2=idle, 3=active, 4=unavailable
+
 	// TODO: refactor this to be better / more efficient
 	public Server bestFit(Job job) {
 		int bestFit = Integer.MAX_VALUE;
 		int minAvail = Integer.MAX_VALUE;
 		Server best = null;
+		Server bestDontCare = null;
 		Boolean found = false;
 
 		for (Server serv : servers) {
@@ -32,7 +35,7 @@ public class Cluster {
 			return best;
 		} else {
 			// go through xml file and find the server that fits best prior to other load
-			System.out.println("DIDNT QUITE MAKE IT");
+			System.out.println(xmlServers);
 			Server xmlBest = null;
 			for (Server serv : xmlServers) {
 				if (serv.coreCount > job.cpuCores && serv.disk > job.disk && serv.memory > job.memory) {
