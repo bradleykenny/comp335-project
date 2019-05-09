@@ -27,8 +27,9 @@ public class Cluster {
 			if (serv.coreCount >= job.cpuCores && serv.disk >= job.disk && serv.memory >= job.memory) {
 				int fitnessValue = serv.coreCount - job.cpuCores;
 				if ((fitnessValue < bestFit) || (fitnessValue == bestFit && serv.availableTime < minAvail)) {
-					if (serv.state == 3) {
+					if (serv.state == 0 || serv.state == 2) {
 						bestFit = fitnessValue;
+						minAvail = serv.availableTime;
 						found = true;
 						best = serv;
 					} else {
