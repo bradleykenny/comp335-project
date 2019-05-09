@@ -3,7 +3,7 @@ import java.util.ArrayList;
 public class Cluster {
 	
 	private ArrayList<Server> servers = new ArrayList<Server>();
-	Server[] xmlServers;
+	private Server[] xmlServers;
 
 	Cluster(ArrayList<Server> servers, Server[] xmlServers) {
 		this.servers = servers;
@@ -32,12 +32,15 @@ public class Cluster {
 			return best;
 		} else {
 			// go through xml file and find the server that fits best prior to other load
+			System.out.println("DIDNT QUITE MAKE IT");
 			Server xmlBest = null;
 			for (Server serv : xmlServers) {
 				if (serv.coreCount > job.cpuCores && serv.disk > job.disk && serv.memory > job.memory) {
 					int fitnessValue = serv.coreCount - job.cpuCores;
 					if (fitnessValue < bestFit) {
+						bestFit = fitnessValue;
 						xmlBest = serv;
+						System.out.println("GOT EM");
 					}
 				}
 			} return xmlBest;
