@@ -46,18 +46,16 @@ public class Cluster {
 	}
 
 	public Server firstFit(Job job) {
-		// type | id | state | time | cores | memory | space
-		Server types;
-		Server first = null;
-
-		int coreLimit = 256;
-		int serverCountLimit = 100;
+		// type | id | state | time | cores | memory | space |
 		ArrayList<Integer> serverTypes = new ArrayList<Integer>();
+
 		for(Server serv : servers){
 			if(serverTypes.contains(serv.coreCount)==false){
 				serverTypes.add(serv.coreCount);
 			}
 		}
+		
+
 		return null;
 
 		/*
