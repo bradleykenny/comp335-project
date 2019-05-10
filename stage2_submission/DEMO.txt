@@ -16,7 +16,7 @@ PRE: 	Within the environment, we need to contain the server simulation (provided
 	|_ ds-server
 	|_ ds-client
 	
-	stage2_submission
+	stage2_submission/source
 	|_ Client.java
 	|_ Cluster.java
 	|_ Job.java
@@ -29,7 +29,7 @@ STEPS FOR DEMO:
 	3. Run the server using the relevant command.
 		a. In the case of ds-server, it would be "./ds-server -c <config_file> -v all". (Using all to show entire output; could use something else).
 	4. Run the client using "java Client -a <fit_algorithm>". This will enable the simulation.
-	4.a) fit algorithm commands are:
+	4. a) fit algorithm commands are:
 		 ff - firstFit
 		 bf - bestFit
 		 wf - worstFit
