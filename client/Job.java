@@ -1,5 +1,5 @@
 public class Job {
-	
+
 	public int submitTime;
 	public int id;
 	public int estRuntime;
