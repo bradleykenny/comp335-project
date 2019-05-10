@@ -100,13 +100,9 @@ public class Client {
 				Server sendTo = null;
 				if (algorithmType.equals("bf")) {
 					sendTo = ourCluster.bestFit(job);
-					System.out.println("sendTo" + sendTo);
-					System.out.println("job" + job);
 					send("SCHD " + job.id + " " + sendTo.type + " " + sendTo.id);
 				} else if (algorithmType.equals("ff")){
 					sendTo = ourCluster.firstFit(job);
-					System.out.println("sendTo" + sendTo);
-					System.out.println("job" + job);
 					send("SCHD " + job.id + " " + sendTo.type + " " + sendTo.id);
 				} 
 				
@@ -202,7 +198,6 @@ public class Client {
 				int d = Integer.parseInt(server.getAttribute("disk"));
 				Server temp = new Server(i, t, l, b, r, c, m, d);
 				serverArr[i] = temp;
-				System.out.println(temp);
 			}
 			largestServer = setLargestServer();
 		} catch (Exception ex) {
@@ -230,7 +225,7 @@ public class Client {
 		Client ourClient = new Client("127.0.0.1", 8096);
 
 		// Check for "-a" cmd argument and set algorithm type accordingly.
-		if (args[0] != null) {
+		if (args.length == 2) {
 			if (args[0].equals("-a")) {
 				if (args[1].equals("bf")) {
 					ourClient.algorithmType = "bf";
