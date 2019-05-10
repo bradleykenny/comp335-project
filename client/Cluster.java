@@ -22,19 +22,16 @@ public class Cluster {
 		
 		Boolean found = false;
 
+		// for else, need to be able to compare initial stats, not currently updated.
 		for (Server serv : servers) {
-			if (serv.coreCount >= job.cpuCores && serv.disk >= job.disk && serv.memory >= job.memory) {
+			if ((serv.coreCount >= job.cpuCores && serv.disk >= job.disk && serv.memory >= job.memory)) {
 				int fitnessValue = serv.coreCount - job.cpuCores;
 				if ((fitnessValue < bestFit) || (fitnessValue == bestFit && serv.availableTime < minAvail)) {
-					// this returns the wrong one when there is a server larger than this
-					if (serv.state == 0 || serv.state == 2) {
-						bestFit = fitnessValue;
-						minAvail = serv.availableTime;
+					bestFit = fitnessValue;
+					minAvail = serv.availableTime;
+					if (serv.state == 0 || serv.state == 1 || serv.state == 2 || serv.state == 3) {
 						found = true;
 						best = serv;
-					} else {
-						System.out.println("TYPE: " + serv.type);
-						bestDontCare = serv;
 					}
 				}
 			}
@@ -42,7 +39,15 @@ public class Cluster {
 		if (found) {
 			return best;
 		} else {
-			return bestDontCare;
+			int something = Integer.MAX_VALUE;
+			Server theOne = null;
+			for (Server serv : xmlServers) {
+				int fit = job.cpuCores - serv.coreCount;
+				if (fit < something) {
+					theOne = serv;
+				}
+			} 
+			return theOne;
 		} 
 
 		// // go through xml file and find the server that fits best prior to other load
