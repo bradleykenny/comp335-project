@@ -74,4 +74,17 @@ public class Cluster {
 		}
 		return firstActive;
 	}
+
+	public void sortByID(ArrayList<Server> servers) {
+		int n = servers.size(); 
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < n - i - 1; j++) {
+                if (servers.get(j).coreCount > servers.get(j+1).coreCount) { 
+                    Server temp = servers.get(j); 
+                    servers.set(j, servers.get(j+1)); 
+                    servers.set(j+1, temp); 
+				} 
+			}
+		}
+	}
 }
