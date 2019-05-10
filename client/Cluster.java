@@ -55,16 +55,19 @@ public class Cluster {
 
 		for (Server serv : sortedServers) {
 			for (Server serv2 : servers) {
-				if (serv.type.equals(serv2.type)) {
-					if (serv2.coreCount >= job.cpuCores && serv2.disk >= job.disk && serv2.memory >= job.memory && serv2.state != 4 && serv2.state != 3) {
+				if ((serv.type).equals(serv2.type)) {
+					if (serv2.coreCount >= job.cpuCores && serv2.disk >= job.disk && serv2.memory >= job.memory && serv2.state != 4){// && serv2.state != 3) {
 						return serv2;
 					}
 				}
 			}
 		}
 		for (Server serv : xmlServers) {
-			if (serv.coreCount >= job.cpuCores && serv.disk >= job.disk && serv.memory >= job.disk) {
-				return serv;
+			Server temp = null;
+			if (serv.coreCount >= job.cpuCores && serv.disk >= job.disk && serv.memory >= job.disk && serv.state != 4) {
+				temp = serv;
+				temp.id = 0;
+				return temp;
 			}
 		}
 		return null;
