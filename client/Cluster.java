@@ -111,13 +111,13 @@ public class Cluster {
 						worst = serv;
 						minAvail=serv.availableTime;
 					}
-					if(fitnessValue>worstFit && serv.state==3){
-						worstIgnore = serv;
-					}
 					else if(fitnessValue>altFit && job.estRuntime<serv.availableTime){
 						altFit = fitnessValue;
 						altFound = true;
 						alt = serv;
+					}
+					else{
+						worstIgnore = serv;
 					}
 				}
 			}
