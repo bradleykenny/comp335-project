@@ -50,18 +50,31 @@ public class Cluster {
 		}
 	}
 
+	/*
+	 * First-Fit algorithm implemented by John Kim.
+	 * Iterate through sorted servers, compare each jobs' requirements to 
+	 * the servers' capacity and if it can run the job, assign it to that server.
+	 * otherwise, look for the next active server that can run the job and
+	 * assign it, regardless of how ill-fitting the job size to the server size.
+	 */
 	public Server firstFit(Job job) {
 		Server[] sortedServers = sortByID(xmlServers);
 
+		// Iterate through the sorted servers and check for the server's available resources
+		// and if the server has sufficient amount of resources, assign the job to the server by
+		// returning the server which is then passed to the ds-server.
 		for (Server serv : sortedServers) {
 			for (Server serv2 : servers) {
 				if ((serv.type).equals(serv2.type)) {
-					if (serv2.coreCount >= job.cpuCores && serv2.disk >= job.disk && serv2.memory >= job.memory && serv2.state != 4){// && serv2.state != 3) {
+					if (serv2.coreCount >= job.cpuCores && serv2.disk >= job.disk && serv2.memory >= job.memory && serv2.state != 4){
 						return serv2;
 					}
 				}
 			}
 		}
+		// For when there aren't any good fit to for job-server
+		// iterate through the whole arrayList of servers and find the next active server that
+		// can run the job.
 		for (Server serv : xmlServers) {
 			Server temp = null;
 			if (serv.coreCount >= job.cpuCores && serv.disk >= job.disk && serv.memory >= job.disk && serv.state != 4) {
@@ -73,6 +86,11 @@ public class Cluster {
 		return null;
 	}
 
+	/*
+	 * Bubble sort function, based off GeeksForGeeks implementation
+	 * Takes in an arrayList of servers which are sorted by the coreCount,
+	 * which dictate the serverType and size.
+	 */
 	public Server[] sortByID(Server[] servArr) {
 		int n = servArr.length;
 		for (int i = 0; i < n - 1; i++) {
