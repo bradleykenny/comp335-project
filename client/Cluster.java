@@ -101,7 +101,7 @@ public class Cluster {
 		// 		coreCounts.add(serv.coreCount);
 		// 	}
 		// }
-		for(Server serv : xmlServers){
+		for(Server serv : servers){
 			if(serv.coreCount >= job.cpuCores && serv.disk >= job.disk && serv.memory >= job.memory){
 				int fitnessValue = serv.coreCount-job.cpuCores;
 				if (fitnessValue > worstFit){
@@ -112,16 +112,18 @@ public class Cluster {
 						minAvail=serv.availableTime;
 						System.out.println("worst ran");
 					}
-					else if(fitnessValue>altFit && job.estRuntime<serv.availableTime){
+				}
+				else if(fitnessValue>altFit && serv.availableTime!=-1){
+					if(serv.state==0 || serv.state == 2){
 						altFit = fitnessValue;
 						altFound = true;
 						alt = serv;
 						System.out.println("alt ran");
 					}
-					else{
-						System.out.println("butts ran");
-						worstIgnore = serv;
-					}
+				}
+				else{
+					System.out.println("butts ran");
+					worstIgnore = serv;
 				}
 			}
 		}
