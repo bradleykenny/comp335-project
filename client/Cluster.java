@@ -83,9 +83,9 @@ public class Cluster {
                 if (servArr.get(j).coreCount > servArr.get(j+1).coreCount) { 
                     Server temp = servArr.get(j); 
                     servArr.set(j, servArr.get(j+1)); 
-                    servArr.set(j+1, temp); 
+                    servArr.set(j+1, temp);
 				} 
 			}
-		} return servArr;
+		}return servArr;
 	}
 }
