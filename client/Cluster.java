@@ -56,8 +56,7 @@ public class Cluster {
 		for (Server serv : sortedServers) {
 			for (Server serv2 : servers) {
 				if (serv.type.equals(serv2.type)) {
-					if (serv2.coreCount >= job.cpuCores && serv2.disk >= job.disk && serv2.memory >= job.memory
-							&& serv2.state != 4 && serv2.state != 3) {
+					if (serv2.coreCount >= job.cpuCores && serv2.disk >= job.disk && serv2.memory >= job.memory && serv2.state != 4 && serv2.state != 3) {
 						return serv2;
 					}
 				}
@@ -70,23 +69,6 @@ public class Cluster {
 		}
 		return null;
 	}
-
-	// for(int i = 0; i < 9; i++)
-	// {
-	// if(serv.coreCount==Math.pow(2, i))
-	// {
-	// if (serv.coreCount >= job.cpuCores && serv.disk >= job.disk && serv.memory >=
-	// job.memory)
-	// {
-	// first = serv;
-	// if(first.state != 4)
-	// {
-	// firstActive = first;
-	// }
-	// return first;
-	// }
-	// }
-	// }
 
 	public Server[] sortByID(Server[] servArr) {
 		int n = servArr.length;
