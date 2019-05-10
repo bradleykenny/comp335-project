@@ -1,0 +1,36 @@
+### STAGE 2 DEMO INSTRUCTIONS
+
+PRE: 	Within the environment, we need to contain the server simulation (provided by Young), and the config file/s
+		are to be used on the client simulator. An example environment is shown below.
+
+	ds-sim/06May2019
+	|_ config_simple1.xml
+	|_ config_simple2.xml
+	|_ config_simple3.xml
+	|_ config_simple4.xml
+	|_ config_simple5.xml
+	|_ config_simple6.xml
+	|_ config_simple7.xml
+	|_ config_simple8.xml
+	|_ config_simple9.xml
+	|_ ds-server
+	|_ ds-client
+	
+	stage2_submission
+	|_ Client.java
+	|_ Cluster.java
+	|_ Job.java
+	|_ Server.java
+
+
+STEPS FOR DEMO:
+	1. Enter the directory containing the files we want to use for the demonstration.
+	2. Run the command "javac Client.java" to compile the Java file.
+	3. Run the server using the relevant command.
+		a. In the case of ds-server, it would be "./ds-server -c <config_file> -v all". (Using all to show entire output; could use something else).
+	4. Run the client using "java Client -a <fit_algorithm>". This will enable the simulation.
+	4.a) fit algorithm commands are:
+		 ff - firstFit
+		 bf - bestFit
+		 wf - worstFit
+	5. Observe output. 
