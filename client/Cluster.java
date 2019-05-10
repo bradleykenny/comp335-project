@@ -95,41 +95,42 @@ public class Cluster {
 		Boolean altFound = false;
 		Server worstIgnore = null;
 		int minAvail = Integer.MIN_VALUE;
-		ArrayList<Integer> coreCounts = new ArrayList<Integer>();
-		for (Server serv : xmlServers){
-			if(coreCounts.contains(serv.coreCount)==false){
-				coreCounts.add(serv.coreCount);
-			}
-		}
-		for(Integer i : coreCounts){
-			for(Server serv : xmlServers){
-				if(serv.coreCount==i && serv.coreCount > job.cpuCores && serv.disk > job.disk && serv.memory > job.memory){
-					int fitnessValue = serv.coreCount-job.cpuCores;
-					if(fitnessValue>worstFit && (serv.state==0 || serv.state == 2)){
+		// ArrayList<Integer> coreCounts = new ArrayList<Integer>();
+		// for (Server serv : xmlServers){
+		// 	if(coreCounts.contains(serv.coreCount)==false){
+		// 		coreCounts.add(serv.coreCount);
+		// 	}
+		// }
+		for(Server serv : xmlServers){
+			if(serv.coreCount >= job.cpuCores && serv.disk >= job.disk && serv.memory >= job.memory){
+				int fitnessValue = serv.coreCount-job.cpuCores;
+				if (fitnessValue > worstFit){
+					if(serv.state==0 || serv.state == 2){
 						worstFit = fitnessValue;
 						worstFound = true;
 						worst = serv;
 						minAvail=serv.availableTime;
+						System.out.println("worst ran");
 					}
 					else if(fitnessValue>altFit && job.estRuntime<serv.availableTime){
 						altFit = fitnessValue;
 						altFound = true;
 						alt = serv;
+						System.out.println("alt ran");
 					}
 					else{
+						System.out.println("butts ran");
 						worstIgnore = serv;
 					}
 				}
 			}
 		}
-		if(worstFound==true){
+		if(worstFound == true){
 			return worst;
 		}
 		else if(altFound == true){
 			return alt;
 		}
-		else{
-			return worstIgnore;
-		}
+		return worstIgnore;
 	}
 }
