@@ -56,14 +56,14 @@ public class Cluster {
 
 		for(Server serv : servers)
 		{
-			for(int i = 0; i < 8; i++)
+			for(int i = 0; i < 9; i++)
 			{
 				if(serv.coreCount==Math.pow(2, i))
 				{
 					if (serv.coreCount >= job.cpuCores && serv.disk >= job.disk && serv.memory >= job.memory) 
 					{
 						first = serv;
-						if(first.state == 0 || first.state == 2)
+						if(first.state != 4)
 						{
 							firstActive = first;
 						}
