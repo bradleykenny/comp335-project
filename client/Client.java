@@ -182,7 +182,7 @@ public class Client {
 	 */
 	public void parseXML() {
 		try {
-			File systemXML = new File("../ds-sim/28Apr2019/system.xml");
+			File systemXML = new File("../ds-sim/06May2019/system.xml");
 
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();

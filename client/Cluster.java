@@ -62,7 +62,6 @@ public class Cluster {
 
 	public Server firstFit(Job job)
 	{
-		ArrayList<Integer> serverTypes = new ArrayList<Integer>();
 		Server first = null;
 		Server firstActive = null;
 
