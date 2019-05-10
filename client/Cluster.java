@@ -12,29 +12,22 @@ public class Cluster {
 
 	// 0=inactive, 1=booting, 2=idle, 3=active, 4=unavailable
 
-	// TODO: refactor this to be better / more efficient
 	public Server bestFit(Job job) {
 		int bestFit = Integer.MAX_VALUE;
 		int minAvail = Integer.MAX_VALUE;
-		
 		Server best = null;
-		Server bestDontCare = null;
-		
 		Boolean found = false;
 
+		// for else, need to be able to compare initial stats, not currently updated.
 		for (Server serv : servers) {
-			if (serv.coreCount >= job.cpuCores && serv.disk >= job.disk && serv.memory >= job.memory) {
+			if ((serv.coreCount >= job.cpuCores && serv.disk >= job.disk && serv.memory >= job.memory)) {
 				int fitnessValue = serv.coreCount - job.cpuCores;
 				if ((fitnessValue < bestFit) || (fitnessValue == bestFit && serv.availableTime < minAvail)) {
-					// this returns the wrong one when there is a server larger than this
-					if (serv.state == 0 || serv.state == 2) {
-						bestFit = fitnessValue;
-						minAvail = serv.availableTime;
+					bestFit = fitnessValue;
+					minAvail = serv.availableTime;
+					if (serv.state == 0 || serv.state == 1 || serv.state == 2 || serv.state == 3) {
 						found = true;
 						best = serv;
-					} else {
-						System.out.println("TYPE: " + serv.type);
-						bestDontCare = serv;
 					}
 				}
 			}
@@ -42,22 +35,18 @@ public class Cluster {
 		if (found) {
 			return best;
 		} else {
-			return bestDontCare;
+			int bestFitAlt = Integer.MAX_VALUE;
+			Server servAlt = null;
+			for (Server serv : xmlServers) {
+				int fitnessValueAlt = serv.coreCount - job.cpuCores;
+				if (fitnessValueAlt >= 0 && fitnessValueAlt < bestFitAlt && serv.disk > job.disk && serv.memory > job.memory) {
+					bestFitAlt = fitnessValueAlt;
+					servAlt = serv;
+				}
+			} 
+			servAlt.id = 0;
+			return servAlt;
 		} 
-
-		// // go through xml file and find the server that fits best prior to other load
-		// System.out.println(xmlServers);
-		// Server xmlBest = null;
-		// for (Server serv : xmlServers) {
-		// 	if (serv.coreCount > job.cpuCores && serv.disk > job.disk && serv.memory > job.memory) {
-		// 		int fitnessValue = serv.coreCount - job.cpuCores;
-		// 		if (fitnessValue < bestFit) {
-		// 			bestFit = fitnessValue;
-		// 			xmlBest = serv;
-		// 			System.out.println("GOT EM");
-		// 		}
-		// 	}
-		// } return xmlBest;
 	}
 
 	public Server firstFit(Job job)
