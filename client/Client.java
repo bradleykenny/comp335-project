@@ -79,12 +79,12 @@ public class Client {
 				send("OK");
 
 				currString = receive();
+				serverArrList = new ArrayList<Server>();
 				while (!currString.equals(".")) {
 					// We know the server has stopped sending information when we get ".".
 					// Therefore, we'll keeping reading information in and adding array until then.
 
 					String[] serverInfo = currString.split("\\s+");
-
 					// Adding Server information to ArrayList for later use. 
 					serverArrList.add(
 							new Server(serverInfo[0], Integer.parseInt(serverInfo[1]), Integer.parseInt(serverInfo[2]),
@@ -100,8 +100,24 @@ public class Client {
 				Server sendTo = null;
 				if (algorithmType.equals("bf")) {
 					sendTo = ourCluster.bestFit(job);
+					System.out.println("sendTo" + sendTo);
+					System.out.println("job" + job);
 					send("SCHD " + job.id + " " + sendTo.type + " " + sendTo.id);
-				} else {
+				} else if (algorithmType.equals("ff")){
+					sendTo = ourCluster.firstFit(job);
+					System.out.println("sendTo" + sendTo);
+					System.out.println("job" + job);
+					send("SCHD " + job.id + " " + sendTo.type + " " + sendTo.id);
+				} 
+				/*
+				else if (algorithmType.equals("wf")){
+					sendTo = ourCluster.worstFit(job);
+					System.out.println("sendTo" + sendTo);
+					System.out.println("job" + job);
+					send("SCHD " + job.id + " " + sendTo.type + " " + sendTo.id);
+				}
+				*/
+				else {
 					// FROM STAGE 1
 					String[] jobData = currString.split("\\s+");
 					int count = Integer.parseInt(jobData[2]);
@@ -166,7 +182,7 @@ public class Client {
 	 */
 	public void parseXML() {
 		try {
-			File systemXML = new File("../ds-sim/28Apr2019/system.xml");
+			File systemXML = new File("../ds-sim/06May2019/system.xml");
 
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -185,8 +201,8 @@ public class Client {
 				int m = Integer.parseInt(server.getAttribute("memory"));
 				int d = Integer.parseInt(server.getAttribute("disk"));
 				Server temp = new Server(i, t, l, b, r, c, m, d);
-				serverArrList.add(temp);
-				// System.out.println(serverArr[i].coreCount);
+				serverArr[i] = temp;
+				System.out.println(temp);
 			}
 			largestServer = setLargestServer();
 		} catch (Exception ex) {
