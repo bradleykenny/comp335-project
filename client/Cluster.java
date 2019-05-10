@@ -54,27 +54,38 @@ public class Cluster {
 		Server first = null;
 		Server firstActive = null;
 
-		ArrayList<Server> sortedServers = sortByID(servers);
-		for(Server serv : sortedServers)
-		{
-			for(int i = 0; i < 9; i++)
-			{
-				if(serv.coreCount==Math.pow(2, i))
-				{
-					if (serv.coreCount >= job.cpuCores && serv.disk >= job.disk && serv.memory >= job.memory) 
-					{
-						first = serv;
-						if(first.state != 4)
-						{
-							firstActive = first;
-						}
-						return first;
+		Server[] sortedServers = sortByID(xmlServers);
+		for(Server serv : sortedServers) {
+			for (Server serv2 : servers) {
+				if (serv.type == serv2.type) {
+					if (serv.coreCount >= job.cpuCores && serv.disk >= job.disk && serv.memory >= job.disk && serv.state != 4) {
+						return serv;
 					}
-				}
+				}	
 			}
 		}
-		return firstActive;
+		for (Server serv : xmlServers) {
+			if (serv.coreCount >= job.cpuCores && serv.disk >= job.disk && serv.memory >= job.disk) {
+				return serv;
+			}
+		} return null;
 	}
+
+	// for(int i = 0; i < 9; i++)
+	// 		{
+	// 			if(serv.coreCount==Math.pow(2, i))
+	// 			{
+	// 				if (serv.coreCount >= job.cpuCores && serv.disk >= job.disk && serv.memory >= job.memory) 
+	// 				{
+	// 					first = serv;
+	// 					if(first.state != 4)
+	// 					{
+	// 						firstActive = first;
+	// 					}
+	// 					return first;
+	// 				}
+	// 			}
+	// 		}
 
 	public Server[] sortByID(Server[] servArr) {
 		int n = servArr.length; 
