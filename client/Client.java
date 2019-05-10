@@ -70,7 +70,7 @@ public class Client {
 				}
 
 				// Parse job information received here.
-				String[] jobString = currString.split("\\s+"); // break the job information up so we can create obj
+				String[] jobString = currString.split("\\s+"); // Break the job information up so we can create obj.
 				Job job = new Job(Integer.parseInt(jobString[1]), Integer.parseInt(jobString[2]),
 						Integer.parseInt(jobString[3]), Integer.parseInt(jobString[4]), Integer.parseInt(jobString[5]),
 						Integer.parseInt(jobString[6]));
@@ -97,7 +97,6 @@ public class Client {
 
 				Cluster ourCluster = new Cluster(serverArrList, serverArr);
 
-				// TODO: Implement all our solutions here.
 				Server sendTo = null;
 				if (algorithmType.equals("bf")) {
 					sendTo = ourCluster.bestFit(job);
@@ -108,16 +107,13 @@ public class Client {
 				} else if (algorithmType.equals("wf")) {
 					sendTo = ourCluster.worstFit(job);
 					send("SCHD " + job.id + " " + sendTo.type + " " + sendTo.id);
-				}
-
-				else {
+				} else {
 					// FROM STAGE 1
 					String[] jobData = currString.split("\\s+");
 					int count = Integer.parseInt(jobData[2]);
 					send("SCHD " + count + " " + serverArr[largestServer].type + " " + "0");
 				}
 
-				// send("SCHD " + job.id + " " + sendTo.type + " " + sendTo.id);
 				currString = receive();
 			}
 		}
