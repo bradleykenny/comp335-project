@@ -76,16 +76,16 @@ public class Cluster {
 		return firstActive;
 	}
 
-	public ArrayList<Server> sortByID(ArrayList<Server> servArr) {
-		int n = servArr.size(); 
+	public Server[] sortByID(Server[] servArr) {
+		int n = servArr.length; 
         for (int i = 0; i < n - 1; i++) {
             for (int j = 0; j < n - i - 1; j++) {
-                if (servArr.get(j).coreCount > servArr.get(j+1).coreCount) { 
-                    Server temp = servArr.get(j); 
-                    servArr.set(j, servArr.get(j+1)); 
-                    servArr.set(j+1, temp);
+                if (servArr[j].coreCount > servArr[j+1].coreCount) { 
+                    Server temp = servArr[j]; 
+                    servArr[j] = servArr[j+1]; 
+                    servArr[j+1] = temp;
 				} 
 			}
-		}return servArr;
+		} return servArr;
 	}
 }
