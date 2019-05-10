@@ -10,15 +10,20 @@ public class Cluster {
 		this.xmlServers = xmlServers;
 	}
 
-	// 0=inactive, 1=booting, 2=idle, 3=active, 4=unavailable
+	// STATES: 0=inactive, 1=booting, 2=idle, 3=active, 4=unavailable
 
+	/*
+	 * Best-fit algorithm implemented by Bradley Kenny. This algorithm iterates
+	 * through the ArrayList and looks for the server that will be the 'best' for
+	 * our given job. This is determined by calculating the fitness value and
+	 * ensuring the server has enough resources to be able to handle the job.
+	 */
 	public Server bestFit(Job job) {
 		int bestFit = Integer.MAX_VALUE;
 		int minAvail = Integer.MAX_VALUE;
 		Server best = null;
 		Boolean found = false;
 
-		// for else, need to be able to compare initial stats, not currently updated.
 		for (Server serv : servers) {
 			if ((serv.coreCount >= job.cpuCores && serv.disk >= job.disk && serv.memory >= job.memory)) {
 				int fitnessValue = serv.coreCount - job.cpuCores;
@@ -35,6 +40,7 @@ public class Cluster {
 		if (found) {
 			return best;
 		} else {
+			// We only want to get here if there is nothing calculated above. 
 			int bestFitAlt = Integer.MAX_VALUE;
 			Server servAlt = null;
 			for (Server serv : xmlServers) {
@@ -45,41 +51,43 @@ public class Cluster {
 					servAlt = serv;
 				}
 			}
-			servAlt.id = 0;
+			servAlt.id = 0; // If this isn't zero, server thinks it doesn't exist.
 			return servAlt;
 		}
 	}
 
 	/*
-	 * First-Fit algorithm implemented by John Kim.
-	 * Iterate through sorted servers, compare each jobs' requirements to 
-	 * the servers' capacity and if it can run the job, assign it to that server.
-	 * otherwise, look for the next active server that can run the job and
-	 * assign it, regardless of how ill-fitting the job size to the server size.
+	 * First-Fit algorithm implemented by John Kim. Iterate through sorted servers,
+	 * compare each jobs' requirements to the servers' capacity and if it can run
+	 * the job, assign it to that server. otherwise, look for the next active server
+	 * that can run the job and assign it, regardless of how ill-fitting the job
+	 * size to the server size.
 	 */
 	public Server firstFit(Job job) {
 		Server[] sortedServers = sortByID(xmlServers);
 
-		// Iterate through the sorted servers and check for the server's available resources
-		// and if the server has sufficient amount of resources, assign the job to the server by
-		// returning the server which is then passed to the ds-server.
+		// Iterate through the sorted servers and check for the server's available
+		// resources and if the server has sufficient amount of resources, assign 
+		// the job to the server by returning the server which is then passed to 
+		// the ds-server.
 		for (Server serv : sortedServers) {
 			for (Server serv2 : servers) {
 				if ((serv.type).equals(serv2.type)) {
-					if (serv2.coreCount >= job.cpuCores && serv2.disk >= job.disk && serv2.memory >= job.memory && serv2.state != 4){
+					if (serv2.coreCount >= job.cpuCores && serv2.disk >= job.disk && serv2.memory >= job.memory
+							&& serv2.state != 4) {
 						return serv2;
 					}
 				}
 			}
 		}
 		// For when there aren't any good fit to for job-server
-		// iterate through the whole arrayList of servers and find the next active server that
-		// can run the job.
+		// iterate through the whole arrayList of servers and find the next active
+		// server that can run the job.
 		for (Server serv : xmlServers) {
 			Server temp = null;
 			if (serv.coreCount >= job.cpuCores && serv.disk >= job.disk && serv.memory >= job.disk && serv.state != 4) {
 				temp = serv;
-				temp.id = 0;
+				temp.id = 0; // If this isn't zero, server thinks it doesn't exist.
 				return temp;
 			}
 		}
@@ -87,9 +95,9 @@ public class Cluster {
 	}
 
 	/*
-	 * Bubble sort function, based off GeeksForGeeks implementation
-	 * Takes in an arrayList of servers which are sorted by the coreCount,
-	 * which dictate the serverType and size.
+	 * Bubble sort function, based off GeeksForGeeks implementation Takes in an
+	 * arrayList of servers which are sorted by the coreCount, which dictate the
+	 * serverType and size.
 	 */
 	public Server[] sortByID(Server[] servArr) {
 		int n = servArr.length;
@@ -112,9 +120,10 @@ public class Cluster {
 		Server alt = null;
 		Boolean worstFound = false;
 		Boolean altFound = false;
-		
+
 		for (Server serv : servers) {
-			if (serv.coreCount >= job.cpuCores && serv.disk >= job.disk && serv.memory >= job.memory && (serv.state == 0 || serv.state == 2 || serv.state == 3)) {
+			if (serv.coreCount >= job.cpuCores && serv.disk >= job.disk && serv.memory >= job.memory
+					&& (serv.state == 0 || serv.state == 2 || serv.state == 3)) {
 				int fitnessValue = serv.coreCount - job.cpuCores;
 				if (fitnessValue > worstFit && (serv.availableTime == -1 || serv.availableTime == job.submitTime)) {
 					worstFit = fitnessValue;
@@ -124,14 +133,14 @@ public class Cluster {
 					altFit = fitnessValue;
 					altFound = true;
 					alt = serv;
-				} 
+				}
 			}
 		}
 		if (worstFound) {
 			return worst;
 		} else if (altFound) {
 			return alt;
-		} 
+		}
 		int lowest = Integer.MIN_VALUE;
 		Server forNow = null;
 		for (Server serv : xmlServers) {
@@ -141,7 +150,7 @@ public class Cluster {
 				forNow = serv;
 			}
 		} 
-		forNow.id = 0;
+		forNow.id = 0; // If this isn't zero, server thinks it doesn't exist.
 		return forNow;
 	}
 }
