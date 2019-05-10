@@ -69,6 +69,7 @@ public class Cluster {
 		Boolean worstFound = false;
 		Boolean altFound = false;
 		Server worstIgnore = null;
+		int minAvail = Integer.MIN_VALUE;
 		ArrayList<Integer> coreCounts = new ArrayList<Integer>();
 		for (Server serv : xmlServers){
 			if(coreCounts.contains(serv.coreCount)==false){
@@ -79,10 +80,11 @@ public class Cluster {
 			for(Server serv : xmlServers){
 				if(serv.coreCount==i && serv.coreCount > job.cpuCores && serv.disk > job.disk && serv.memory > job.memory){
 					int fitnessValue = serv.coreCount-job.cpuCores;
-					if(fitnessValue>worstFit && serv.state==2){
+					if(fitnessValue>worstFit && (serv.state==0 || serv.state == 2)){
 						worstFit = fitnessValue;
 						worstFound = true;
 						worst = serv;
+						minAvail=serv.availableTime;
 					}
 					if(fitnessValue>worstFit && serv.state==3){
 						worstIgnore = serv;
