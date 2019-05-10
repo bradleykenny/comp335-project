@@ -83,40 +83,38 @@ public class Cluster {
 		Boolean worstFound = false;
 		Boolean altFound = false;
 		Server worstIgnore = null;
-		int minAvail = Integer.MIN_VALUE;
+		
 		for(Server serv : servers){
 			if(serv.coreCount >= job.cpuCores && serv.disk >= job.disk && serv.memory >= job.memory){
 				int fitnessValue = serv.coreCount - job.cpuCores;
-				if (fitnessValue > worstFit){
-					if((serv.state==0 || serv.state == 2) && serv.availableTime==-1){
+				if (fitnessValue > worstFit && serv.availableTime==-1){
 						worstFit = fitnessValue;
 						worstFound = true;
 						worst = serv;
-						minAvail=serv.availableTime;
-					}
 				}
-				else if(fitnessValue>altFit){
-					if(serv.state==0 || serv.state == 2){
+				else if(fitnessValue > altFit){
 						altFit = fitnessValue;
 						altFound = true;
 						alt = serv;
-						minAvail=serv.availableTime;
-					}
 				}
-				else{
+				else if(serv.state==3){
 					worstIgnore = serv;
 				}
 			}
 		}
 		if(worstFound == true){
-			System.out.println("worst ran");
 			return worst;
 		}
 		else if(altFound == true){
-			System.out.println("alt ran");
 			return alt;
 		}
-		System.out.println("butts ran");
+		for(Server serv : servers){
+			if(serv.coreCount >= job.cpuCores && serv.disk >= job.disk && serv.memory >= job.memory){
+				if(serv.state==3){
+					worstIgnore = serv;
+				}
+			}
+		}
 		return worstIgnore;
 	}
 }
