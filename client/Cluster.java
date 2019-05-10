@@ -47,22 +47,9 @@ public class Cluster {
 					theOne = serv;
 				}
 			} 
+			theOne.id = 0;
 			return theOne;
 		} 
-
-		// // go through xml file and find the server that fits best prior to other load
-		// System.out.println(xmlServers);
-		// Server xmlBest = null;
-		// for (Server serv : xmlServers) {
-		// 	if (serv.coreCount > job.cpuCores && serv.disk > job.disk && serv.memory > job.memory) {
-		// 		int fitnessValue = serv.coreCount - job.cpuCores;
-		// 		if (fitnessValue < bestFit) {
-		// 			bestFit = fitnessValue;
-		// 			xmlBest = serv;
-		// 			System.out.println("GOT EM");
-		// 		}
-		// 	}
-		// } return xmlBest;
 	}
 
 	public Server firstFit(Job job)
