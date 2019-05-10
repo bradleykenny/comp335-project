@@ -54,7 +54,6 @@ public class Cluster {
 
 	public Server firstFit(Job job)
 	{
-		ArrayList<Integer> serverTypes = new ArrayList<Integer>();
 		Server first = null;
 		Server firstActive = null;
 
@@ -75,12 +74,6 @@ public class Cluster {
 					}
 				}
 			}
-			/*
-			if(serverTypes.contains(serv.coreCount)==false)
-			{
-				serverTypes.add(serv.coreCount);
-			}
-			*/
 		}
 		return firstActive;
 	}
