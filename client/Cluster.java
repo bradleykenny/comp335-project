@@ -51,23 +51,40 @@ public class Cluster {
 	}
 
 	public Server firstFit(Job job) {
-		Server first = null;
-		Server firstActive = null;
+		Server[] sortedServers = sortByID(xmlServers);
 
-		for (Server serv : servers) {
-			for (int i = 0; i < 8; i++) {
-				if (serv.coreCount == Math.pow(2, i)) {
-					if (serv.coreCount >= job.cpuCores && serv.disk >= job.disk && serv.memory >= job.memory) {
-						first = serv;
-						if (first.state == 0 || first.state == 2) {
-							firstActive = first;
-						}
-						return first;
+		for (Server serv : sortedServers) {
+			for (Server serv2 : servers) {
+				if ((serv.type).equals(serv2.type)) {
+					if (serv2.coreCount >= job.cpuCores && serv2.disk >= job.disk && serv2.memory >= job.memory && serv2.state != 4){// && serv2.state != 3) {
+						return serv2;
 					}
 				}
 			}
 		}
-		return firstActive;
+		for (Server serv : xmlServers) {
+			Server temp = null;
+			if (serv.coreCount >= job.cpuCores && serv.disk >= job.disk && serv.memory >= job.disk && serv.state != 4) {
+				temp = serv;
+				temp.id = 0;
+				return temp;
+			}
+		}
+		return null;
+	}
+
+	public Server[] sortByID(Server[] servArr) {
+		int n = servArr.length;
+		for (int i = 0; i < n - 1; i++) {
+			for (int j = 0; j < n - i - 1; j++) {
+				if (servArr[j].coreCount > servArr[j + 1].coreCount) {
+					Server temp = servArr[j];
+					servArr[j] = servArr[j + 1];
+					servArr[j + 1] = temp;
+				}
+			}
+		}
+		return servArr;
 	}
 
 	public Server worstFit(Job job) {
