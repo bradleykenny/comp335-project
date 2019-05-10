@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class Cluster {
-	
+
 	private ArrayList<Server> servers = new ArrayList<Server>();
 	private Server[] xmlServers;
 
@@ -39,32 +39,27 @@ public class Cluster {
 			Server servAlt = null;
 			for (Server serv : xmlServers) {
 				int fitnessValueAlt = serv.coreCount - job.cpuCores;
-				if (fitnessValueAlt >= 0 && fitnessValueAlt < bestFitAlt && serv.disk > job.disk && serv.memory > job.memory) {
+				if (fitnessValueAlt >= 0 && fitnessValueAlt < bestFitAlt && serv.disk > job.disk
+						&& serv.memory > job.memory) {
 					bestFitAlt = fitnessValueAlt;
 					servAlt = serv;
 				}
-			} 
+			}
 			servAlt.id = 0;
 			return servAlt;
-		} 
+		}
 	}
 
-	public Server firstFit(Job job)
-	{
+	public Server firstFit(Job job) {
 		Server first = null;
 		Server firstActive = null;
 
-		for(Server serv : servers)
-		{
-			for(int i = 0; i < 8; i++)
-			{
-				if(serv.coreCount==Math.pow(2, i))
-				{
-					if (serv.coreCount >= job.cpuCores && serv.disk >= job.disk && serv.memory >= job.memory) 
-					{
+		for (Server serv : servers) {
+			for (int i = 0; i < 8; i++) {
+				if (serv.coreCount == Math.pow(2, i)) {
+					if (serv.coreCount >= job.cpuCores && serv.disk >= job.disk && serv.memory >= job.memory) {
 						first = serv;
-						if(first.state == 0 || first.state == 2)
-						{
+						if (first.state == 0 || first.state == 2) {
 							firstActive = first;
 						}
 						return first;
@@ -75,7 +70,7 @@ public class Cluster {
 		return firstActive;
 	}
 
-	public Server worstFit(Job job){
+	public Server worstFit(Job job) {
 		int worstFit = Integer.MIN_VALUE;
 		int altFit = Integer.MIN_VALUE;
 		Server worst = null;
@@ -83,34 +78,31 @@ public class Cluster {
 		Boolean worstFound = false;
 		Boolean altFound = false;
 		Server worstIgnore = null;
-		
-		for(Server serv : servers){
-			if(serv.coreCount >= job.cpuCores && serv.disk >= job.disk && serv.memory >= job.memory){
+
+		for (Server serv : servers) {
+			if (serv.coreCount >= job.cpuCores && serv.disk >= job.disk && serv.memory >= job.memory) {
 				int fitnessValue = serv.coreCount - job.cpuCores;
-				if (fitnessValue > worstFit && serv.availableTime==-1){
-						worstFit = fitnessValue;
-						worstFound = true;
-						worst = serv;
-				}
-				else if(fitnessValue > altFit){
-						altFit = fitnessValue;
-						altFound = true;
-						alt = serv;
-				}
-				else if(serv.state==3){
+				if (fitnessValue > worstFit && serv.availableTime == -1) {
+					worstFit = fitnessValue;
+					worstFound = true;
+					worst = serv;
+				} else if (fitnessValue > altFit && serv.state != 3) {
+					altFit = fitnessValue;
+					altFound = true;
+					alt = serv;
+				} else if (serv.state == 3) {
 					worstIgnore = serv;
 				}
 			}
 		}
-		if(worstFound == true){
+		if (worstFound) {
 			return worst;
-		}
-		else if(altFound == true){
+		} else if (altFound) {
 			return alt;
 		}
-		for(Server serv : servers){
-			if(serv.coreCount >= job.cpuCores && serv.disk >= job.disk && serv.memory >= job.memory){
-				if(serv.state==3){
+		for (Server serv : servers) {
+			if (serv.coreCount >= job.cpuCores && serv.disk >= job.disk && serv.memory >= job.memory) {
+				if (serv.state == 3) {
 					worstIgnore = serv;
 				}
 			}
