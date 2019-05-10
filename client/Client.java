@@ -1,4 +1,4 @@
-	import java.net.*;
+import java.net.*;
 import java.util.ArrayList;
 import java.io.*;
 
@@ -17,12 +17,12 @@ public class Client {
 	private String currString;
 	private Boolean finished = false;
 	private String algorithmType = "ff";
-	
+
 	/*
-	 * The constructor for the class. Need an address and port to set-up the connection
-	 * with the server. Also sets up an input and output datastream so we can send/
-	 * receive data from the server.
-	 */ 
+	 * The constructor for the class. Need an address and port to set-up the
+	 * connection with the server. Also sets up an input and output datastream so we
+	 * can send/ receive data from the server.
+	 */
 
 	public Client(String address, int port) {
 		// Establish a connection with the server.
@@ -65,16 +65,17 @@ public class Client {
 				}
 				if (currString.equals("NONE")) {
 					// Time to go...
-					finished = true; 
+					finished = true;
 					break;
 				}
 
 				// Parse job information received here.
 				String[] jobString = currString.split("\\s+"); // break the job information up so we can create obj
-				Job job = new Job(Integer.parseInt(jobString[1]), Integer.parseInt(jobString[2]), Integer.parseInt(jobString[3]),
-						Integer.parseInt(jobString[4]), Integer.parseInt(jobString[5]), Integer.parseInt(jobString[6]));
+				Job job = new Job(Integer.parseInt(jobString[1]), Integer.parseInt(jobString[2]),
+						Integer.parseInt(jobString[3]), Integer.parseInt(jobString[4]), Integer.parseInt(jobString[5]),
+						Integer.parseInt(jobString[6]));
 
-				send("RESC All"); // Get all server information. 
+				send("RESC All"); // Get all server information.
 				currString = receive();
 				send("OK");
 
@@ -85,7 +86,7 @@ public class Client {
 					// Therefore, we'll keeping reading information in and adding array until then.
 
 					String[] serverInfo = currString.split("\\s+");
-					// Adding Server information to ArrayList for later use. 
+					// Adding Server information to ArrayList for later use.
 					serverArrList.add(
 							new Server(serverInfo[0], Integer.parseInt(serverInfo[1]), Integer.parseInt(serverInfo[2]),
 									Integer.parseInt(serverInfo[3]), Integer.parseInt(serverInfo[4]),
@@ -101,23 +102,19 @@ public class Client {
 				if (algorithmType.equals("bf")) {
 					sendTo = ourCluster.bestFit(job);
 					send("SCHD " + job.id + " " + sendTo.type + " " + sendTo.id);
-				} else if (algorithmType.equals("ff")){
+				} else if (algorithmType.equals("ff")) {
 					sendTo = ourCluster.firstFit(job);
 					send("SCHD " + job.id + " " + sendTo.type + " " + sendTo.id);
-				} 
-				
-				else if (algorithmType.equals("wf")){
+				} else if (algorithmType.equals("wf")) {
 					sendTo = ourCluster.worstFit(job);
-					System.out.println("sendTo" + sendTo);
-					System.out.println("job" + job);
 					send("SCHD " + job.id + " " + sendTo.type + " " + sendTo.id);
 				}
-				
+
 				else {
 					// FROM STAGE 1
 					String[] jobData = currString.split("\\s+");
 					int count = Integer.parseInt(jobData[2]);
-					send("SCHD " + count + " " + serverArr[largestServer].type + " " + "0");	
+					send("SCHD " + count + " " + serverArr[largestServer].type + " " + "0");
 				}
 
 				// send("SCHD " + job.id + " " + sendTo.type + " " + sendTo.id);
@@ -155,7 +152,6 @@ public class Client {
 		return message;
 	}
 
-
 	// Terminate the connection with the server.
 	public void quit() {
 		try {
@@ -172,9 +168,9 @@ public class Client {
 	}
 
 	/*
-	 * Used to parse information from the XML used in association with the
-	 * server. We need to be able to break up the information and put it 
-	 * into a Server object so that we can use it. 
+	 * Used to parse information from the XML used in association with the server.
+	 * We need to be able to break up the information and put it into a Server
+	 * object so that we can use it.
 	 */
 	public void parseXML() {
 		try {
@@ -206,7 +202,7 @@ public class Client {
 
 	}
 
-	/* 
+	/*
 	 * Using the information from the XML file, we want to determine which Server
 	 * object is the largest and return that.
 	 */
@@ -220,7 +216,8 @@ public class Client {
 		return largestServer;
 	}
 
-	// This is our method that will be called when running the program from terminal. 
+	// This is our method that will be called when running the program from
+	// terminal.
 	public static void main(String args[]) {
 		Client ourClient = new Client("127.0.0.1", 8096);
 
