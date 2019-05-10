@@ -40,7 +40,7 @@ public class Cluster {
 		if (found) {
 			return best;
 		} else {
-			// We only want to get here if there is nothing calculated above. 
+			// We only want to get here if there is nothing calculated above.
 			int bestFitAlt = Integer.MAX_VALUE;
 			Server servAlt = null;
 			for (Server serv : xmlServers) {
@@ -67,8 +67,8 @@ public class Cluster {
 		Server[] sortedServers = sortByID(xmlServers);
 
 		// Iterate through the sorted servers and check for the server's available
-		// resources and if the server has sufficient amount of resources, assign 
-		// the job to the server by returning the server which is then passed to 
+		// resources and if the server has sufficient amount of resources, assign
+		// the job to the server by returning the server which is then passed to
 		// the ds-server.
 		for (Server serv : sortedServers) {
 			for (Server serv2 : servers) {
@@ -113,7 +113,15 @@ public class Cluster {
 		return servArr;
 	}
 
+	/*
+	 * Worst-fit algorithm implemented by Mark Smith. This algorithm iterates
+	 * through the ArrayList and looks for the server that will be have the 'worst'
+	 * value for the server, and hence likely have the costliest result. This
+	 * implementation uses a tracked fitness value to compare the servers to the
+	 * given job, returning the one with the largest gap.
+	 */
 	public Server worstFit(Job job) {
+		// Establish flags and fit variables to track fitness scores and servers.
 		int worstFit = Integer.MIN_VALUE;
 		int altFit = Integer.MIN_VALUE;
 		Server worst = null;
@@ -136,6 +144,8 @@ public class Cluster {
 				}
 			}
 		}
+		// Return the server that was found to be most suitable based on fitness scores
+		// and availability.
 		if (worstFound) {
 			return worst;
 		} else if (altFound) {
@@ -149,7 +159,7 @@ public class Cluster {
 				lowest = fit;
 				forNow = serv;
 			}
-		} 
+		}
 		forNow.id = 0; // If this isn't zero, server thinks it doesn't exist.
 		return forNow;
 	}
