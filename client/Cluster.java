@@ -12,14 +12,10 @@ public class Cluster {
 
 	// 0=inactive, 1=booting, 2=idle, 3=active, 4=unavailable
 
-	// TODO: refactor this to be better / more efficient
 	public Server bestFit(Job job) {
 		int bestFit = Integer.MAX_VALUE;
 		int minAvail = Integer.MAX_VALUE;
-		
 		Server best = null;
-		Server bestDontCare = null;
-		
 		Boolean found = false;
 
 		// for else, need to be able to compare initial stats, not currently updated.
@@ -39,16 +35,17 @@ public class Cluster {
 		if (found) {
 			return best;
 		} else {
-			int something = Integer.MAX_VALUE;
-			Server theOne = null;
+			int bestFitAlt = Integer.MAX_VALUE;
+			Server servAlt = null;
 			for (Server serv : xmlServers) {
-				int fit = job.cpuCores - serv.coreCount;
-				if (fit < something) {
-					theOne = serv;
+				int fitnessValueAlt = serv.coreCount - job.cpuCores;
+				if (fitnessValueAlt >= 0 && fitnessValueAlt < bestFitAlt && serv.disk > job.disk && serv.memory > job.memory) {
+					bestFitAlt = fitnessValueAlt;
+					servAlt = serv;
 				}
 			} 
-			theOne.id = 0;
-			return theOne;
+			servAlt.id = 0;
+			return servAlt;
 		} 
 	}
 
