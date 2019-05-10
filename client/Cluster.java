@@ -95,44 +95,39 @@ public class Cluster {
 		Boolean altFound = false;
 		Server worstIgnore = null;
 		int minAvail = Integer.MIN_VALUE;
-		// ArrayList<Integer> coreCounts = new ArrayList<Integer>();
-		// for (Server serv : xmlServers){
-		// 	if(coreCounts.contains(serv.coreCount)==false){
-		// 		coreCounts.add(serv.coreCount);
-		// 	}
-		// }
 		for(Server serv : servers){
 			if(serv.coreCount >= job.cpuCores && serv.disk >= job.disk && serv.memory >= job.memory){
-				int fitnessValue = serv.coreCount-job.cpuCores;
+				int fitnessValue = serv.coreCount - job.cpuCores;
 				if (fitnessValue > worstFit){
-					if(serv.state==0 || serv.state == 2){
+					if((serv.state==0 || serv.state == 2) && serv.availableTime==-1){
 						worstFit = fitnessValue;
 						worstFound = true;
 						worst = serv;
 						minAvail=serv.availableTime;
-						System.out.println("worst ran");
 					}
 				}
-				else if(fitnessValue>altFit && serv.availableTime!=-1){
+				else if(fitnessValue>altFit){
 					if(serv.state==0 || serv.state == 2){
 						altFit = fitnessValue;
 						altFound = true;
 						alt = serv;
-						System.out.println("alt ran");
+						minAvail=serv.availableTime;
 					}
 				}
 				else{
-					System.out.println("butts ran");
 					worstIgnore = serv;
 				}
 			}
 		}
 		if(worstFound == true){
+			System.out.println("worst ran");
 			return worst;
 		}
 		else if(altFound == true){
+			System.out.println("alt ran");
 			return alt;
 		}
+		System.out.println("butts ran");
 		return worstIgnore;
 	}
 }
