@@ -77,36 +77,36 @@ public class Cluster {
 		Server alt = null;
 		Boolean worstFound = false;
 		Boolean altFound = false;
-		Server worstIgnore = null;
-
+		
 		for (Server serv : servers) {
-			if (serv.coreCount >= job.cpuCores && serv.disk >= job.disk && serv.memory >= job.memory) {
+			if (serv.coreCount >= job.cpuCores && serv.disk >= job.disk && serv.memory >= job.memory && (serv.state == 0 || serv.state == 2 || serv.state == 3)) {
 				int fitnessValue = serv.coreCount - job.cpuCores;
-				if (fitnessValue > worstFit && serv.availableTime == -1) {
+				if (fitnessValue > worstFit && (serv.availableTime == -1 || serv.availableTime == job.submitTime)) {
 					worstFit = fitnessValue;
 					worstFound = true;
 					worst = serv;
-				} else if (fitnessValue > altFit && serv.state != 3) {
+				} else if (fitnessValue > altFit && serv.availableTime >= 0) {
 					altFit = fitnessValue;
 					altFound = true;
 					alt = serv;
-				} else if (serv.state == 3) {
-					worstIgnore = serv;
-				}
+				} 
 			}
 		}
 		if (worstFound) {
 			return worst;
 		} else if (altFound) {
 			return alt;
-		}
-		for (Server serv : servers) {
-			if (serv.coreCount >= job.cpuCores && serv.disk >= job.disk && serv.memory >= job.memory) {
-				if (serv.state == 3) {
-					worstIgnore = serv;
-				}
+		} 
+		int lowest = Integer.MIN_VALUE;
+		Server forNow = null;
+		for (Server serv : xmlServers) {
+			int fit = serv.coreCount - job.cpuCores;
+			if (fit > lowest && serv.disk >= job.disk && serv.memory >= job.memory) {
+				lowest = fit;
+				forNow = serv;
 			}
-		}
-		return worstIgnore;
+		} 
+		forNow.id = 0;
+		return forNow;
 	}
 }
