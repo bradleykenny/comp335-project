@@ -163,4 +163,13 @@ public class Cluster {
 		forNow.id = 0; // If this isn't zero, server thinks it doesn't exist.
 		return forNow;
 	}
+
+	/*
+	 * Custom-algorithm implemented by Bradley Kenny. For stage 3. 
+	 * !!! EXPLAINATION WILL GO HERE.
+	 * focus on aspects such as: disk, memory...
+	 */
+	public Server myFit(Job job) {	
+		return null;
+	}
 }
