@@ -16,7 +16,7 @@ public class Client {
 	private int largestServer = 0;
 	private String currString;
 	private Boolean finished = false;
-	private String algorithmType = "ff";
+	private String algorithmType;
 
 	/*
 	 * The constructor for the class. Need an address and port to set-up the
