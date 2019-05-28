@@ -170,16 +170,24 @@ public class Cluster {
 	 * focus on aspects such as: disk, memory...
 	 */
 	public Server myFit(Job job) {	
-		int bestFit = Integer.MAX_VALUE;
+		int bestFitCore = Integer.MAX_VALUE;
+		int bestFitDisk = Integer.MAX_VALUE;
+		int bestFitMemory = Integer.MAX_VALUE;
+		
 		int minAvail = Integer.MAX_VALUE;
 		Server best = null;
 		Boolean found = false;
 
 		for (Server serv : servers) {
 			if ((serv.coreCount >= job.cpuCores && serv.disk >= job.disk && serv.memory >= job.memory)) {
-				int fitnessValue = serv.coreCount - job.cpuCores;
-				if ((fitnessValue < bestFit) || (fitnessValue == bestFit && serv.availableTime < minAvail)) {
-					bestFit = fitnessValue;
+				int coreFitness = serv.coreCount - job.cpuCores;
+				int diskFitness = serv.disk - job.disk;
+				int memoryFitness = serv.memory - job.memory;
+
+				int totalFitness = coreFitness + diskFitness + memoryFitness;
+
+				if ((totalFitness < bestFitCore) || (totalFitness == bestFitCore && serv.availableTime < minAvail)) {
+					bestFitCore = totalFitness;
 					minAvail = serv.availableTime;
 					if (serv.state == 0 || serv.state == 1 || serv.state == 2 || serv.state == 3) {
 						found = true;
