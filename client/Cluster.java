@@ -10,7 +10,7 @@ public class Cluster {
 		this.xmlServers = xmlServers;
 	}
 
-	// STATES: 0=inactive, 1=booting, 2=idle, 3=active, 4=unavailable
+	// STATES: 0 = inactive, 1 = booting, 2 = idle, 3 = active, 4 = unavailable
 
 	/*
 	 * Best-fit algorithm implemented by Bradley Kenny. This algorithm iterates
@@ -214,4 +214,5 @@ public class Cluster {
 			return servAlt;
 		}
 	}
+	// do implementation where we look to use any that are available (best fit) before turning on new ones
 }
