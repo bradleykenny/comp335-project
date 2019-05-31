@@ -169,50 +169,8 @@ public class Cluster {
 	 * WILL GO HERE. focus on aspects such as: disk, memory...
 	 */
 	public Server myFit(Job job) {
-		int bestFitCore = Integer.MAX_VALUE;
-		int bestFitDisk = Integer.MAX_VALUE;
-		int bestFitMemory = Integer.MAX_VALUE;
-
-		int minAvail = Integer.MAX_VALUE;
-		Server best = null;
-		Boolean found = false;
-
-		for (Server serv : servers) {
-			if ((serv.coreCount >= job.cpuCores && serv.disk >= job.disk && serv.memory >= job.memory)) {
-				int coreFitness = serv.coreCount - job.cpuCores;
-				int diskFitness = serv.disk - job.disk;
-				int memoryFitness = serv.memory - job.memory;
-
-				int totalFitness = coreFitness + diskFitness + memoryFitness;
-
-				if ((totalFitness < bestFitCore) || (totalFitness == bestFitCore && serv.availableTime < minAvail)) {
-					bestFitCore = totalFitness;
-					minAvail = serv.availableTime;
-					if (serv.state == 0 || serv.state == 1 || serv.state == 2 || serv.state == 3) {
-						found = true;
-						best = serv;
-					}
-				}
-			}
-		}
-		if (found) {
-			return best;
-		} else {
-			// We only want to get here if there is nothing calculated above.
-			int bestFitAlt = Integer.MAX_VALUE;
-			Server servAlt = null;
-			for (Server serv : xmlServers) {
-				int fitnessValueAlt = serv.coreCount - job.cpuCores;
-				if (fitnessValueAlt >= 0 && fitnessValueAlt < bestFitAlt && serv.disk > job.disk
-						&& serv.memory > job.memory) {
-					bestFitAlt = fitnessValueAlt;
-					servAlt = serv;
-				}
-			}
-			servAlt.id = 0; // If this isn't zero, server thinks it doesn't exist.
-			return servAlt;
-		}
+		
+		
+		return null;
 	}
-	// do implementation where we look to use any that are available (best fit)
-	// before turning on new ones
 }
