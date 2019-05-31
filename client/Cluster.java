@@ -25,7 +25,7 @@ public class Cluster {
 		Boolean found = false;
 
 		for (Server serv : servers) {
-			if ((serv.coreCount >= job.cpuCores && serv.disk >= job.disk && serv.memory >= job.memory)) {
+			if ((serv.hasEnoughCores(job) && serv.hasEnoughDisk(job) && serv.hasEnoughMemory(job))) {
 				int fitnessValue = serv.coreCount - job.cpuCores;
 				if ((fitnessValue < bestFit) || (fitnessValue == bestFit && serv.availableTime < minAvail)) {
 					bestFit = fitnessValue;
@@ -73,7 +73,7 @@ public class Cluster {
 		for (Server serv : sortedServers) {
 			for (Server serv2 : servers) {
 				if ((serv.type).equals(serv2.type)) {
-					if (serv2.coreCount >= job.cpuCores && serv2.disk >= job.disk && serv2.memory >= job.memory
+					if (serv2.hasEnoughCores(job) && serv2.hasEnoughDisk(job) && serv2.hasEnoughMemory(job)
 							&& serv2.state != 4) {
 						return serv2;
 					}
@@ -85,7 +85,7 @@ public class Cluster {
 		// server that can run the job.
 		for (Server serv : xmlServers) {
 			Server temp = null;
-			if (serv.coreCount >= job.cpuCores && serv.disk >= job.disk && serv.memory >= job.disk && serv.state != 4) {
+			if (serv.hasEnoughCores(job) && serv.hasEnoughDisk(job) && serv.hasEnoughMemory(job) && serv.state != 4) {
 				temp = serv;
 				temp.id = 0; // If this isn't zero, server thinks it doesn't exist.
 				return temp;
@@ -130,7 +130,7 @@ public class Cluster {
 		Boolean altFound = false;
 
 		for (Server serv : servers) {
-			if (serv.coreCount >= job.cpuCores && serv.disk >= job.disk && serv.memory >= job.memory
+			if (serv.hasEnoughCores(job) && serv.hasEnoughDisk(job) && serv.hasEnoughMemory(job)
 					&& (serv.state == 0 || serv.state == 2 || serv.state == 3)) {
 				int fitnessValue = serv.coreCount - job.cpuCores;
 				if (fitnessValue > worstFit && (serv.availableTime == -1 || serv.availableTime == job.submitTime)) {
@@ -155,7 +155,7 @@ public class Cluster {
 		Server forNow = null;
 		for (Server serv : xmlServers) {
 			int fit = serv.coreCount - job.cpuCores;
-			if (fit > lowest && serv.disk >= job.disk && serv.memory >= job.memory) {
+			if (fit > lowest && serv.hasEnoughDisk(job) && serv.hasEnoughMemory(job)) {
 				lowest = fit;
 				forNow = serv;
 			}
@@ -165,15 +165,14 @@ public class Cluster {
 	}
 
 	/*
-	 * Custom-algorithm implemented by Bradley Kenny. For stage 3. 
-	 * !!! EXPLAINATION WILL GO HERE.
-	 * focus on aspects such as: disk, memory...
+	 * Custom-algorithm implemented by Bradley Kenny. For stage 3. !!! EXPLAINATION
+	 * WILL GO HERE. focus on aspects such as: disk, memory...
 	 */
-	public Server myFit(Job job) {	
+	public Server myFit(Job job) {
 		int bestFitCore = Integer.MAX_VALUE;
 		int bestFitDisk = Integer.MAX_VALUE;
 		int bestFitMemory = Integer.MAX_VALUE;
-		
+
 		int minAvail = Integer.MAX_VALUE;
 		Server best = null;
 		Boolean found = false;
@@ -214,5 +213,6 @@ public class Cluster {
 			return servAlt;
 		}
 	}
-	// do implementation where we look to use any that are available (best fit) before turning on new ones
+	// do implementation where we look to use any that are available (best fit)
+	// before turning on new ones
 }

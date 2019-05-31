@@ -31,4 +31,16 @@ public class Server {
 		this.memory = memory;
 		this.disk = disk;
 	}
+
+	public Boolean hasEnoughCores(Job j) {
+		return (this.coreCount >= j.cpuCores);
+	}
+
+	public Boolean hasEnoughMemory(Job j) {
+		return (this.memory >= j.memory);
+	} 
+
+	public Boolean hasEnoughDisk(Job j) {
+		return (this.disk >= j.disk);
+	}
 }
