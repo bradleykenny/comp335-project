@@ -169,13 +169,27 @@ public class Cluster {
 	 * WILL GO HERE. focus on aspects such as: disk, memory...
 	 */
 	public Server myFit(Job job) {
+		int bestFit = Integer.MAX_VALUE;
+		for (Server serv : xmlServers) {
+			if (serv.canRunJob(job)) {
+				bestFit = serv.coreCount - job.cpuCores;
+			}
+		}
+
 		sortByCores(servers, 0, servers.size() - 1);
 		for (Server serv : servers) {
-			if (serv.hasEnoughCores(job)) {
+			int currFit = serv.coreCount - job.cpuCores;
+			if (serv.canRunJob(job) && serv.state != 4 && bestFit >= currFit) {
 				return serv;
 			} 
 		}
-		return null;
+		
+		for (Server serv : xmlServers) {
+			if (serv.canRunJob(job)) {
+				serv.id = 0;
+				return serv;
+			}
+		} return null;
 	}
 
 	void sortByCores(ArrayList<Server> arr, int low, int high) {

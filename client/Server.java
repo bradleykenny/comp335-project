@@ -43,4 +43,8 @@ public class Server {
 	public Boolean hasEnoughDisk(Job j) {
 		return (this.disk >= j.disk);
 	}
+
+	public Boolean canRunJob(Job j) {
+		return (this.hasEnoughCores(j) & this.hasEnoughMemory(j) && this.hasEnoughDisk(j));
+	}
 }
