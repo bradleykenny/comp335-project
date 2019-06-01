@@ -180,26 +180,26 @@ public class Cluster {
 		sortByCores(servers, 0, servers.size() - 1);
 		for (Server serv : servers) {
 			int currFit = serv.coreCount - job.cpuCores;
-			if (serv.canRunJob(job) && bestFit <= currFit) {
-				return serv;
-			} 
-		}
-
-		for (Server serv : xmlServers) {
-			int currFit = serv.coreCount - job.cpuCores;
-			if (serv.canRunJob(job) && bestFit == currFit) {
-				serv.id = 0;
+			if (serv.canRunJob(job) && currFit <= bestFit) {
 				return serv;
 			}
-		} return null;
+		}
+
+		Server temp = null;
+		for (Server serv : xmlServers) {
+			int currFit = serv.coreCount - job.cpuCores;
+			if (serv.canRunJob(job) && bestFit >= currFit) {
+				temp = serv;
+			}
+		}
+		temp.id = 0;
+		return temp;
 	}
 
-	/* 
-	* QuickSort Algorithm based on GeeksForGeeks solution.
-	* > arr --> ArrayList to be sorted 
-	* > low  --> starting index
-	* > high  --> ending index 
-	*/
+	/*
+	 * QuickSort Algorithm based on GeeksForGeeks' solution. > arr --> ArrayList to
+	 * be sorted > low --> starting index > high --> ending index
+	 */
 	void sortByCores(ArrayList<Server> arr, int low, int high) {
 		if (low < high) {
 			int pi = partition(arr, low, high);
@@ -210,12 +210,11 @@ public class Cluster {
 	}
 
 	/*
-	 * Helper function for the QuickSort implementation. 
-	 * takes last element as pivot, places the pivot 
-	 * element at its correct position in sorted ArrayList,
-	 * and places all smaller (smaller than pivot) to left 
-	 * of pivot and all greater elements to right of pivot.
-	 */ 
+	 * Helper function for the QuickSort implementation. takes last element as
+	 * pivot, places the pivot element at its correct position in sorted ArrayList,
+	 * and places all smaller (smaller than pivot) to left of pivot and all greater
+	 * elements to right of pivot.
+	 */
 	int partition(ArrayList<Server> arr, int low, int high) {
 		Server pivot = arr.get(high);
 		int i = (low - 1);
