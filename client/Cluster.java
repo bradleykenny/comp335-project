@@ -183,7 +183,7 @@ public class Cluster {
 				return serv;
 			} 
 		}
-		
+
 		for (Server serv : xmlServers) {
 			if (serv.canRunJob(job)) {
 				serv.id = 0;
@@ -192,6 +192,12 @@ public class Cluster {
 		} return null;
 	}
 
+	/* 
+	* QuickSort Algorithm based on GeeksForGeeks solution.
+	* > arr --> ArrayList to be sorted 
+	* > low  --> starting index
+	* > high  --> ending index 
+	*/
 	void sortByCores(ArrayList<Server> arr, int low, int high) {
 		if (low < high) {
 			int pi = partition(arr, low, high);
@@ -201,6 +207,13 @@ public class Cluster {
 		}
 	}
 
+	/*
+	 * Helper function for the QuickSort implementation. 
+	 * takes last element as pivot, places the pivot 
+	 * element at its correct position in sorted ArrayList,
+	 * and places all smaller (smaller than pivot) to left 
+	 * of pivot and all greater elements to right of pivot.
+	 */ 
 	int partition(ArrayList<Server> arr, int low, int high) {
 		Server pivot = arr.get(high);
 		int i = (low - 1);
