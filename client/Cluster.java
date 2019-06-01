@@ -171,21 +171,23 @@ public class Cluster {
 	public Server myFit(Job job) {
 		int bestFit = Integer.MAX_VALUE;
 		for (Server serv : xmlServers) {
-			if (serv.canRunJob(job)) {
-				bestFit = serv.coreCount - job.cpuCores;
+			int nowFit = serv.coreCount - job.cpuCores;
+			if (serv.canRunJob(job) && nowFit <= bestFit) {
+				bestFit = nowFit;
 			}
 		}
 
 		sortByCores(servers, 0, servers.size() - 1);
 		for (Server serv : servers) {
 			int currFit = serv.coreCount - job.cpuCores;
-			if (serv.canRunJob(job) && serv.state != 4 && bestFit >= currFit) {
+			if (serv.canRunJob(job) && bestFit <= currFit) {
 				return serv;
 			} 
 		}
 
 		for (Server serv : xmlServers) {
-			if (serv.canRunJob(job)) {
+			int currFit = serv.coreCount - job.cpuCores;
+			if (serv.canRunJob(job) && bestFit == currFit) {
 				serv.id = 0;
 				return serv;
 			}
