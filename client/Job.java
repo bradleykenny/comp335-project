@@ -7,12 +7,12 @@ public class Job {
 	public int memory;
 	public int disk;
 
-	Job(int st, int id, int r, int c, int m, int d) {
-		this.submitTime = st;
+	Job(int submitTime, int id, int estRuntime, int cpuCores, int memory, int disk) {
+		this.submitTime = submitTime;
 		this.id = id;
-		this.estRuntime = r;
-		this.cpuCores = c;
-		this.memory = m;
-		this.disk = d;
+		this.estRuntime = estRuntime;
+		this.cpuCores = cpuCores;
+		this.memory = memory;
+		this.disk = disk;
 	}
 }

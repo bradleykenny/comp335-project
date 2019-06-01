@@ -11,17 +11,19 @@ public class Server {
 	public int state;
 	public int availableTime;
 
-	Server(int id, String t, int l, int b, float r, int c, int m, int d) {
+	// Get this information from the XML file.
+	Server(int id, String type, int limit, int bootupTime, float rate, int coreCount, int memory, int disk) {
 		this.id = id;
-		this.type = t;
-		this.limit = l;
-		this.bootupTime = b;
-		this.rate = r;
-		this.coreCount = c;
-		this.memory = m;
-		this.disk = d;
+		this.type = type;
+		this.limit = limit;
+		this.bootupTime = bootupTime;
+		this.rate = rate;
+		this.coreCount = coreCount;
+		this.memory = memory;
+		this.disk = disk;
 	}
 
+	// Get this information from the RESC command.
 	Server(String type, int id, int state, int availableTime, int coreCount, int memory, int disk) {
 		this.type = type;
 		this.id = id;
