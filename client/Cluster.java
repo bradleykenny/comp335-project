@@ -169,7 +169,41 @@ public class Cluster {
 	 * WILL GO HERE. focus on aspects such as: disk, memory...
 	 */
 	public Server myFit(Job job) {
-		
+		sortByCores(servers, 0, servers.size() - 1);
+		for (Server serv : servers) {
+			if (serv.hasEnoughCores(job)) {
+				return serv;
+			} 
+		}
 		return null;
+	}
+
+	void sortByCores(ArrayList<Server> arr, int low, int high) {
+		if (low < high) {
+			int pi = partition(arr, low, high);
+
+			sortByCores(arr, low, pi - 1);
+			sortByCores(arr, pi + 1, high);
+		}
+	}
+
+	int partition(ArrayList<Server> arr, int low, int high) {
+		Server pivot = arr.get(high);
+		int i = (low - 1);
+		for (int j = low; j < high; j++) {
+			if (arr.get(j).coreCount <= pivot.coreCount) {
+				i++;
+
+				Server temp = arr.get(i);
+				arr.set(i, arr.get(j));
+				arr.set(j, temp);
+			}
+		}
+
+		Server temp = arr.get(i + 1);
+		arr.set(i + 1, arr.get(high));
+		arr.set(high, temp);
+
+		return i + 1;
 	}
 }
