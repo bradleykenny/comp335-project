@@ -163,4 +163,35 @@ public class Cluster {
 		forNow.id = 0; // If this isn't zero, server thinks it doesn't exist.
 		return forNow;
 	}
+
+	public Server ignoreFit(Job job) {
+		Server[] sortedServers = sortByID(xmlServers);
+
+		// Iterate through the sorted servers and check for the server's available
+		// resources and if the server has sufficient amount of resources, assign
+		// the job to the server by returning the server which is then passed to
+		// the ds-server.
+		for (Server serv : sortedServers) {
+			for (Server serv2 : servers) {
+				if ((serv.type).equals(serv2.type)) {
+					if (serv2.coreCount >= job.cpuCores && serv2.disk >= job.disk && serv2.memory >= job.memory
+							&& serv2.state != 4 && serv2.state != 0) {
+						return serv2;
+					}
+				}
+			}
+		}
+		// For when there aren't any good fit to for job-server
+		// iterate through the whole arrayList of servers and find the next active
+		// server that can run the job.
+		for (Server serv : xmlServers) {
+			Server temp = null;
+			if (serv.coreCount >= job.cpuCores && serv.disk >= job.disk && serv.memory >= job.disk && serv.state != 4) {
+				temp = serv;
+				temp.id = 0; // If this isn't zero, server thinks it doesn't exist.
+				return temp;
+			}
+		}
+		return null;
+	}
 }

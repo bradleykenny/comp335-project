@@ -107,6 +107,9 @@ public class Client {
 				} else if (algorithmType.equals("wf")) {
 					sendTo = ourCluster.worstFit(job);
 					send("SCHD " + job.id + " " + sendTo.type + " " + sendTo.id);
+				} else if (algorithmType.equals("if")) {
+					sendTo = ourCluster.ignoreFit(job);
+					send("SCHD " + job.id + " " + sendTo.type + " " + sendTo.id);
 				} else {
 					// FROM STAGE 1
 					String[] jobData = currString.split("\\s+");
@@ -170,7 +173,7 @@ public class Client {
 	 */
 	public void parseXML() {
 		try {
-			File systemXML = new File("../ds-sim/06May2019/system.xml");
+			File systemXML = new File("../ds-sim/29May2019/system.xml");
 
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
