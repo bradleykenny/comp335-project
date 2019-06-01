@@ -170,7 +170,6 @@ public class Cluster {
 	 */
 	public Server myFit(Job job) {
 		
-		
 		return null;
 	}
 }
