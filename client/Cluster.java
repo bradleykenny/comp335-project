@@ -20,8 +20,8 @@ public class Cluster {
 
 	public void updateArrList(ArrayList<Server> serverArrList) {
 		this.servers = serverArrList;
-		
-		for(int i = 0; i < xmlServers.length; i++) {
+
+		for (int i = 0; i < xmlServers.length; i++) {
 			xmlServers[i].numAvailable = 0;
 		}
 		for (Server serv : servers) {
@@ -206,9 +206,9 @@ public class Cluster {
 			}
 		}
 
-		sortByCores(servers, 0, servers.size() - 1); // Sort to optimise run time. 
-		
-		// Try to find a server that meets the optimal fit and is currently ready. 
+		sortByCores(servers, 0, servers.size() - 1); // Sort to optimise run time.
+
+		// Try to find a server that meets the optimal fit and is currently ready.
 		int minAvailableTime = Integer.MAX_VALUE;
 		Server bestFitServ = null;
 		for (Server serv : servers) {
@@ -230,7 +230,7 @@ public class Cluster {
 			return bestFitServ;
 		}
 
-		// If we got this far, no available servers that have optimal fit. 
+		// If we got this far, no available servers that have optimal fit.
 
 		int bestFitIdle = Integer.MAX_VALUE;
 		Server bestFitServIdle = null;
