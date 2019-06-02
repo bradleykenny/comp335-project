@@ -1,5 +1,3 @@
-import java.util.HashMap;
-
 public class Server {
 
 	public int id;
@@ -53,5 +51,13 @@ public class Server {
 
 	public Boolean canRunJob(Job j) {
 		return (this.hasEnoughCores(j) & this.hasEnoughMemory(j) && this.hasEnoughDisk(j));
+	}
+
+	public Boolean inInactiveState() {
+		return (this.state == 0 || this.state == 2);
+	}
+
+	public Boolean inGoodState() {
+		return (this.state == 0 || this.state == 1 || this.state == 2 || this.state == 3);
 	}
 }

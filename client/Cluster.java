@@ -5,24 +5,16 @@ public class Cluster {
 
 	private ArrayList<Server> servers = new ArrayList<Server>();
 	private Server[] xmlServers;
-	private HashMap<String, Server> xmlServersMap;
 	private HashMap<String, Integer> estRunTime;
 
 	Cluster(ArrayList<Server> servers, Server[] xmlServers) {
 		this.servers = servers;
 		this.xmlServers = xmlServers;
-
-		for (Server serv : xmlServers) {
-			if (serv != null) {
-				xmlServersMap.put(serv.type, serv);
-			}
-		}
 	}
 
 	Cluster() {
 		this.servers = null;
 		this.xmlServers = null;
-		this.xmlServersMap = new HashMap<String, Server>();
 		this.estRunTime = new HashMap<String, Integer>();
 	}
 
@@ -216,7 +208,7 @@ public class Cluster {
 
 		for (Server serv : servers) {
 			int currFit = serv.coreCount - job.cpuCores;
-			if (serv.canRunJob(job) && currFit <= bestFit) {
+			if (serv.canRunJob(job) && bestFit >= currFit) {
 				String tempID = serv.type + "," + Integer.toString(serv.id);
 				if (estRunTime.containsKey(tempID)) {
 					estRunTime.replace(tempID, job.estRuntime + job.submitTime);
@@ -236,7 +228,6 @@ public class Cluster {
 				if (serv.canRunJob(job) && bestFit >= currFit) {
 					int currEst = estRunTime.get(tempID);
 					if (currEst < bestEst) {
-						System.out.println(currEst);
 						bestEst = currEst;
 						bestGuess = serv;
 						bestGuess.id = i;
@@ -244,6 +235,9 @@ public class Cluster {
 				}
 			}
 		}
+
+		String tempID = bestGuess.type + "," + Integer.toString(bestGuess.id);
+		estRunTime.replace(tempID, estRunTime.get(tempID) + job.estRuntime);
 		return bestGuess;
 	}
 
