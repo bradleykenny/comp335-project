@@ -17,7 +17,7 @@ public class Client {
 	private String currString;
 	private Boolean finished = false;
 	private String algorithmType;
-	public Cluster ourCluster = null;
+	public Cluster ourCluster = new Cluster();
 
 
 	/*
@@ -52,6 +52,7 @@ public class Client {
 		send("AUTH " + System.getProperty("user.name"));
 		currString = receive();
 		parseXML();
+		ourCluster.updateArr(serverArr);
 		send("REDY");
 		currString = receive();
 
@@ -97,7 +98,7 @@ public class Client {
 					currString = receive();
 				}
 
-				ourCluster.update(serverArrList, serverArr);
+				ourCluster.updateArrList(serverArrList);
 
 				Server sendTo = null;
 				if (algorithmType.equals("bf")) {

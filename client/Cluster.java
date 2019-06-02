@@ -19,15 +19,29 @@ public class Cluster {
 		}
 	}
 
-	public void update(ArrayList<Server> serverArrList, Server[] serverArr) {
-		this.servers = serverArrList;
-		this.xmlServers = serverArr;
+	Cluster() {
+		this.servers = null;
+		this.xmlServers = null;
+		this.xmlServersMap = new HashMap<String, Server>();
+		this.estRunTime = new HashMap<String, Integer>();
+	}
 
-		for (Server serv : xmlServers) {
-			if (serv != null) {
-				xmlServersMap.put(serv.type, serv);
+	public void updateArrList(ArrayList<Server> serverArrList) {
+		this.servers = serverArrList;
+		for(int i = 0; i < xmlServers.length; i++) {
+			xmlServers[i].numAvailable = 0;
+		}
+		for (Server serv : servers) {
+			for (int i = 0; i < xmlServers.length; i++) {
+				if (serv.type.equals(xmlServers[i].type)) {
+					xmlServers[i].numAvailable += 1;
+				}
 			}
 		}
+	}
+
+	public void updateArr(Server[] serverArr) {
+		this.xmlServers = serverArr;
 	}
 
 	// STATES: 0 = inactive, 1 = booting, 2 = idle, 3 = active, 4 = unavailable
@@ -199,29 +213,27 @@ public class Cluster {
 
 		sortByCores(servers, 0, servers.size() - 1);
 
-		HashMap<String, Integer> countServers = new HashMap<String, Integer>();
 		for (Server serv : servers) {
-			countServers.put(serv.type, countServers.get(serv.type) + 1);
 			int currFit = serv.coreCount - job.cpuCores;
 			if (serv.canRunJob(job) && currFit <= bestFit) {
 				String tempID = serv.type + "," + Integer.toString(serv.id);
-
+				System.out.println("SETTING: " + tempID);
 				if (estRunTime.containsKey(tempID)) {
 					estRunTime.replace(tempID, job.submitTime - job.estRuntime);
 				} else {
 					estRunTime.put(tempID, job.submitTime - job.estRuntime);
-				}
-
-				return serv;
+				} return serv;
 			}
 		}
 
 		int bestEst = Integer.MAX_VALUE;
 		Server bestGuess = null;
 		for (Server serv : xmlServers) {
+			System.out.println("NUMAVAIL: " + serv.numAvailable);
 			for (int i = 0; i < serv.numAvailable; i++) {
 				int currFit = serv.coreCount - job.cpuCores;
 				String tempID = serv.type + "," + Integer.toString(i);
+				System.out.println("GETTING: " + tempID);
 				int currEst = estRunTime.get(tempID);
 				if (serv.canRunJob(job) && bestFit >= currFit && currEst < bestEst) {
 					bestEst = currEst;
@@ -230,7 +242,7 @@ public class Cluster {
 				}
 			}
 		}
-
+		System.out.println(bestGuess);
 		return bestGuess;
 	}
 
