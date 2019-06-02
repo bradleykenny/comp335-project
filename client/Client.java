@@ -17,6 +17,8 @@ public class Client {
 	private String currString;
 	private Boolean finished = false;
 	private String algorithmType;
+	public Cluster ourCluster = null;
+
 
 	/*
 	 * The constructor for the class. Need an address and port to set-up the
@@ -95,7 +97,7 @@ public class Client {
 					currString = receive();
 				}
 
-				Cluster ourCluster = new Cluster(serverArrList, serverArr);
+				ourCluster.update(serverArrList, serverArr);
 
 				Server sendTo = null;
 				if (algorithmType.equals("bf")) {

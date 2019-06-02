@@ -1,3 +1,5 @@
+import java.util.HashMap;
+
 public class Server {
 
 	public int id;
@@ -10,6 +12,8 @@ public class Server {
 	public int disk;
 	public int state;
 	public int availableTime;
+	
+	public int numAvailable;
 
 	// Get this information from the XML file.
 	Server(int id, String type, int limit, int bootupTime, float rate, int coreCount, int memory, int disk) {
@@ -21,6 +25,7 @@ public class Server {
 		this.coreCount = coreCount;
 		this.memory = memory;
 		this.disk = disk;
+		this.numAvailable = 0;
 	}
 
 	// Get this information from the RESC command.
