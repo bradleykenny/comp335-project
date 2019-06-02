@@ -196,6 +196,8 @@ public class Cluster {
 	 * WILL GO HERE. focus on aspects such as: disk, memory...
 	 */
 	public Server myFit(Job job) {
+
+		// Find the optimal fit across servers, regardless of current capacity.
 		int bestFit = Integer.MAX_VALUE;
 		for (Server serv : xmlServers) {
 			int nowFit = serv.coreCount - job.cpuCores;
@@ -204,23 +206,51 @@ public class Cluster {
 			}
 		}
 
-		sortByCores(servers, 0, servers.size() - 1);
-
+		sortByCores(servers, 0, servers.size() - 1); // Sort to optimise run time. 
+		
+		// Try to find a server that meets the optimal fit and is currently ready. 
+		int minAvailableTime = Integer.MAX_VALUE;
+		Server bestFitServ = null;
 		for (Server serv : servers) {
 			int currFit = serv.coreCount - job.cpuCores;
-			if (serv.canRunJob(job) && bestFit >= currFit) {
-				String tempID = serv.type + "," + Integer.toString(serv.id);
-				if (estRunTime.containsKey(tempID)) {
-					estRunTime.replace(tempID, job.estRuntime + job.submitTime);
-				} else {
-					estRunTime.put(tempID, job.submitTime + job.estRuntime);
-				}
-				return serv;
+			if (serv.canRunJob(job) && bestFit >= currFit && serv.availableTime < minAvailableTime) {
+				minAvailableTime = serv.availableTime;
+				bestFitServ = serv;
 			}
+		}
+
+		// Store values for next run and return best for this job.
+		if (bestFitServ != null) {
+			String tempID = bestFitServ.type + "," + Integer.toString(bestFitServ.id);
+			if (estRunTime.containsKey(tempID)) {
+				estRunTime.replace(tempID, bestFitServ.availableTime);
+			} else {
+				estRunTime.put(tempID, bestFitServ.availableTime);
+			}
+			return bestFitServ;
+		}
+
+		// If we got this far, no available servers that have optimal fit. 
+
+		int bestFitIdle = Integer.MAX_VALUE;
+		Server bestFitServIdle = null;
+		for (Server serv : servers) {
+			if (serv.state == 3 && serv.canRunJob(job)) {
+				int possibleFit = job.cpuCores - serv.coreCount;
+				if (bestFitIdle > possibleFit) {
+					bestFitIdle = possibleFit;
+					bestFitServIdle = serv;
+				}
+			}
+		}
+
+		if (bestFitServIdle != null) {
+			return bestFitServIdle;
 		}
 
 		int bestEst = Integer.MAX_VALUE;
 		Server bestGuess = null;
+
 		for (Server serv : xmlServers) {
 			for (int i = 0; i < serv.numAvailable; i++) {
 				int currFit = serv.coreCount - job.cpuCores;

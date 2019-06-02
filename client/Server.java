@@ -53,7 +53,7 @@ public class Server {
 		return (this.hasEnoughCores(j) & this.hasEnoughMemory(j) && this.hasEnoughDisk(j));
 	}
 
-	public Boolean inInactiveState() {
+	public Boolean readyToGo() {
 		return (this.state == 0 || this.state == 2);
 	}
 
