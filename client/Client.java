@@ -229,6 +229,8 @@ public class Client {
 					ourClient.algorithmType = "wf";
 				} else if (args[1].equals("ff")) {
 					ourClient.algorithmType = "ff";
+				} else if (args[1].equals("if")) {
+					ourClient.algorithmType = "if";
 				}
 			}
 		}
