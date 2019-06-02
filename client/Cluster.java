@@ -198,8 +198,8 @@ public class Cluster {
 	 * the job depending how far into the algorithm it got. The further it gets, the
 	 * trickier it is to find a good fit for the job. This is mostly due to the
 	 * large amount of scheduling required and trying to determine what will result
-	 * in the job waiting the least amount of time.
-	 * Includes the use of the sorting functions described below.
+	 * in the job waiting the least amount of time. Includes the use of the sorting
+	 * functions described below.
 	 */
 	public Server myFit(Job job) {
 

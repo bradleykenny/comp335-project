@@ -10,7 +10,7 @@ public class Server {
 	public int disk;
 	public int state;
 	public int availableTime;
-	
+
 	public int numAvailable;
 
 	// Get this information from the XML file.
@@ -43,7 +43,7 @@ public class Server {
 
 	public Boolean hasEnoughMemory(Job j) {
 		return (this.memory >= j.memory);
-	} 
+	}
 
 	public Boolean hasEnoughDisk(Job j) {
 		return (this.disk >= j.disk);
