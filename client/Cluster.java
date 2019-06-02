@@ -231,7 +231,8 @@ public class Cluster {
 		}
 
 		// If we got this far, no available servers that have optimal fit.
-
+		// Lets see if any idle servers can take the job (cheaper than starting a new
+		// one).
 		int bestFitIdle = Integer.MAX_VALUE;
 		Server bestFitServIdle = null;
 		for (Server serv : servers) {
@@ -248,6 +249,7 @@ public class Cluster {
 			return bestFitServIdle;
 		}
 
+		// Iterate through XML stats and add job to best fit initial server.
 		int bestEst = Integer.MAX_VALUE;
 		Server bestGuess = null;
 
