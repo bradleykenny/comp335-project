@@ -267,7 +267,7 @@ public class Cluster {
 		}
 
 		String tempID = bestGuess.type + "," + Integer.toString(bestGuess.id);
-		estRunTime.replace(tempID, estRunTime.get(tempID) + job.estRuntime);
+		estRunTime.replace(tempID, bestGuess.availableTime);
 		return bestGuess;
 	}
 
