@@ -52,7 +52,7 @@ public class Cluster {
 		Boolean found = false;
 
 		for (Server serv : servers) {
-			if ((serv.hasEnoughCores(job) && serv.hasEnoughDisk(job) && serv.hasEnoughMemory(job))) {
+			if ((serv.canRunJob(job))) {
 				int fitnessValue = serv.coreCount - job.cpuCores;
 				if ((fitnessValue < bestFit) || (fitnessValue == bestFit && serv.availableTime < minAvail)) {
 					bestFit = fitnessValue;
@@ -192,17 +192,23 @@ public class Cluster {
 	}
 
 	/*
-	 * Custom-algorithm implemented by Bradley Kenny. For stage 3. !!! EXPLAINATION
-	 * WILL GO HERE. focus on aspects such as: disk, memory...
+	 * Custom-algorithm implemented by Bradley Kenny. For stage 3. Optimised all
+	 * three aspects in order to get the best 'overall' experience for users. I
+	 * split the algorithm into a number of stages that would decide what to do with
+	 * the job depending how far into the algorithm it got. The further it gets, the
+	 * trickier it is to find a good fit for the job. This is mostly due to the
+	 * large amount of scheduling required and trying to determine what will result
+	 * in the job waiting the least amount of time.
+	 * Includes the use of the sorting functions described below.
 	 */
 	public Server myFit(Job job) {
 
 		// Find the optimal fit across servers, regardless of current capacity.
 		int bestFit = Integer.MAX_VALUE;
 		for (Server serv : xmlServers) {
-			int nowFit = serv.coreCount - job.cpuCores;
-			if (serv.canRunJob(job) && nowFit <= bestFit) {
-				bestFit = nowFit;
+			int currFit = serv.coreCount - job.cpuCores;
+			if (serv.canRunJob(job) && currFit <= bestFit) {
+				bestFit = currFit;
 			}
 		}
 
@@ -223,9 +229,9 @@ public class Cluster {
 		if (bestFitServ != null) {
 			String tempID = bestFitServ.type + "," + Integer.toString(bestFitServ.id);
 			if (estRunTime.containsKey(tempID)) {
-				estRunTime.replace(tempID, bestFitServ.availableTime);
+				estRunTime.replace(tempID, estRunTime.get(tempID) + job.submitTime);
 			} else {
-				estRunTime.put(tempID, bestFitServ.availableTime);
+				estRunTime.put(tempID, job.estRuntime + job.submitTime);
 			}
 			return bestFitServ;
 		}
@@ -236,7 +242,7 @@ public class Cluster {
 		int bestFitIdle = Integer.MAX_VALUE;
 		Server bestFitServIdle = null;
 		for (Server serv : servers) {
-			if (serv.state == 3 && serv.canRunJob(job)) {
+			if (serv.state == 2 && serv.canRunJob(job)) {
 				int possibleFit = job.cpuCores - serv.coreCount;
 				if (bestFitIdle > possibleFit) {
 					bestFitIdle = possibleFit;
@@ -246,6 +252,8 @@ public class Cluster {
 		}
 
 		if (bestFitServIdle != null) {
+			String tempID = bestFitServIdle.type + "," + Integer.toString(bestFitServIdle.id);
+			estRunTime.replace(tempID, estRunTime.get(tempID) + job.submitTime);
 			return bestFitServIdle;
 		}
 
@@ -269,7 +277,7 @@ public class Cluster {
 		}
 
 		String tempID = bestGuess.type + "," + Integer.toString(bestGuess.id);
-		estRunTime.replace(tempID, bestGuess.availableTime);
+		estRunTime.replace(tempID, estRunTime.get(tempID) + job.submitTime);
 		return bestGuess;
 	}
 
