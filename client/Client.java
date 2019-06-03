@@ -107,6 +107,11 @@ public class Client {
 				} else if (algorithmType.equals("wf")) {
 					sendTo = ourCluster.worstFit(job);
 					send("SCHD " + job.id + " " + sendTo.type + " " + sendTo.id);
+					
+				} else if (algorithmType.equals("cf")) {
+					sendTo = ourCluster.myFit(job);
+					send("SCHD " + job.id + " " + sendTo.type + " " + sendTo.id);
+				
 				} else {
 					// FROM STAGE 1
 					String[] jobData = currString.split("\\s+");
@@ -226,6 +231,8 @@ public class Client {
 					ourClient.algorithmType = "wf";
 				} else if (args[1].equals("ff")) {
 					ourClient.algorithmType = "ff";
+				} else if (args[1].equals("cf")) {
+					ourClient.algorithmType = "cf";
 				}
 			}
 		}

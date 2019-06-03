@@ -103,6 +103,20 @@ public class Cluster {
 		int n = servArr.length;
 		for (int i = 0; i < n - 1; i++) {
 			for (int j = 0; j < n - i - 1; j++) {
+				if (servArr[j].id > servArr[j + 1].id) {
+					Server temp = servArr[j];
+					servArr[j] = servArr[j + 1];
+					servArr[j + 1] = temp;
+				}
+			}
+		}
+		return servArr;
+	}
+
+	public Server[] sortByCores(Server[] servArr) {
+		int n = servArr.length;
+		for (int i = 0; i < n - 1; i++) {
+			for (int j = 0; j < n - i - 1; j++) {
 				if (servArr[j].coreCount > servArr[j + 1].coreCount) {
 					Server temp = servArr[j];
 					servArr[j] = servArr[j + 1];
@@ -112,6 +126,7 @@ public class Cluster {
 		}
 		return servArr;
 	}
+	
 
 	/*
 	 * Worst-fit algorithm implemented by Mark Smith. This algorithm iterates
@@ -162,5 +177,34 @@ public class Cluster {
 		}
 		forNow.id = 0; // If this isn't zero, server thinks it doesn't exist.
 		return forNow;
+	}
+
+	public Server cheapFit(Job job){
+		//Sort servers by coreCount each iteration
+		Server[] sortedServers = sortByCores(servers);
+
+		//Run first fit on servers after being sorted by Cores
+		for (Server serv : sortedServers) {
+			for (Server serv2 : servers) {
+				if ((serv.type).equals(serv2.type)) {
+					if (serv2.coreCount >= job.cpuCores && serv2.disk >= job.disk && serv2.memory >= job.memory
+							&& serv2.state != 4) {
+						return serv2;
+					}
+				}
+			}
+		}
+		// For when there aren't any good fit to for job-server
+		// iterate through the whole arrayList of servers and find the next active
+		// server that can run the job.
+		for (Server serv : sortedServers) {
+			Server temp = null;
+			if (serv.coreCount >= job.cpuCores && serv.disk >= job.disk && serv.memory >= job.disk && serv.state != 4) {
+				temp = serv;
+				temp.id = 0; // If this isn't zero, server thinks it doesn't exist.
+				return temp;
+			}
+		}
+		return null;
 	}
 }
