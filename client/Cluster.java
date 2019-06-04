@@ -113,14 +113,14 @@ public class Cluster {
 		return servArr;
 	}
 
-	public Server[] sortByCores(Server[] servArr) {
+	public ArrayList<Server> sortByCores(ArrayList<Server> servArr) {
 		int n = servArr.length;
 		for (int i = 0; i < n - 1; i++) {
 			for (int j = 0; j < n - i - 1; j++) {
-				if (servArr[j].coreCount > servArr[j + 1].coreCount) {
+				if (servArr[j].coreCount > servArr.get(j + 1).coreCount) {
 					Server temp = servArr[j];
-					servArr[j] = servArr[j + 1];
-					servArr[j + 1] = temp;
+					servArr.set(j, servArr.get(j + 1));
+					servArr.set(j+1, temp);
 				}
 			}
 		}
@@ -181,7 +181,7 @@ public class Cluster {
 
 	public Server cheapFit(Job job){
 		//Sort servers by coreCount each iteration
-		ArrayList<Servers> sortedServer = sortByCores(servers);
+		ArrayList<Server> sortedServers = sortByCores(servers);
 
 		//Run first fit on servers after being sorted by Cores
 		for (Server serv : sortedServers) {
