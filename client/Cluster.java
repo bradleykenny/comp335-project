@@ -181,7 +181,7 @@ public class Cluster {
 
 	public Server cheapFit(Job job){
 		//Sort servers by coreCount each iteration
-		ArrayList<Servers> sortedServers = sortByCores(servers);
+		ArrayList<Servers> sortedServer = sortByCores(servers);
 
 		//Run first fit on servers after being sorted by Cores
 		for (Server serv : sortedServers) {
