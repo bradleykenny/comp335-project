@@ -109,7 +109,7 @@ public class Client {
 					send("SCHD " + job.id + " " + sendTo.type + " " + sendTo.id);
 					
 				} else if (algorithmType.equals("cf")) {
-					sendTo = ourCluster.myFit(job);
+					sendTo = ourCluster.cheapFit(job);
 					send("SCHD " + job.id + " " + sendTo.type + " " + sendTo.id);
 				
 				} else {
