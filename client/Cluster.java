@@ -219,7 +219,7 @@ public class Cluster {
 		Server bestFitServ = null;
 		for (Server serv : servers) {
 			int currFit = serv.coreCount - job.cpuCores;
-			if (serv.canRunJob(job) && bestFit >= currFit && serv.availableTime < minAvailableTime) {
+			if (serv.canRunJob(job) && bestFit > currFit || (bestFit == currFit && serv.availableTime < minAvailableTime) && serv.state != 3) {
 				minAvailableTime = serv.availableTime;
 				bestFitServ = serv;
 			}
