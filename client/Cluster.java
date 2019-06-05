@@ -91,7 +91,7 @@ public class Cluster {
 				return temp;
 			}
 		}
-		return null;
+		return null;	
 	}
 
 	/*
@@ -103,7 +103,7 @@ public class Cluster {
 		int n = servArr.length;
 		for (int i = 0; i < n - 1; i++) {
 			for (int j = 0; j < n - i - 1; j++) {
-				if (servArr[j].id > servArr[j + 1].id) {
+				if (servArr[j].coreCount > servArr[j + 1].coreCount) {
 					Server temp = servArr[j];
 					servArr[j] = servArr[j + 1];
 					servArr[j + 1] = temp;
@@ -114,11 +114,11 @@ public class Cluster {
 	}
 
 	public ArrayList<Server> sortByCores(ArrayList<Server> servArr) {
-		int n = servArr.length;
+		int n = servArr.size();
 		for (int i = 0; i < n - 1; i++) {
 			for (int j = 0; j < n - i - 1; j++) {
-				if (servArr[j].coreCount > servArr.get(j + 1).coreCount) {
-					Server temp = servArr[j];
+				if (servArr.get(j).coreCount > servArr.get(j + 1).coreCount) {
+					Server temp = servArr.get(j);
 					servArr.set(j, servArr.get(j + 1));
 					servArr.set(j+1, temp);
 				}
@@ -181,23 +181,19 @@ public class Cluster {
 
 	public Server cheapFit(Job job){
 		//Sort servers by coreCount each iteration
+		Server[] sortedXml = sortByID(xmlServers);
 		ArrayList<Server> sortedServers = sortByCores(servers);
 
 		//Run first fit on servers after being sorted by Cores
-		for (Server serv : sortedServers) {
-			for (Server serv2 : servers) {
-				if ((serv.type).equals(serv2.type)) {
-					if (serv2.coreCount >= job.cpuCores && serv2.disk >= job.disk && serv2.memory >= job.memory
-							&& serv2.state != 4) {
-						return serv2;
-					}
-				}
+		for (Server em : sortedServers) {
+			if (em.coreCount >= job.cpuCores && em.disk >= job.disk && em.memory >= job.memory && em.state != 4) {
+				return em;
 			}
 		}
 		// For when there aren't any good fit to for job-server
 		// iterate through the whole arrayList of servers and find the next active
 		// server that can run the job.
-		for (Server serv : sortedServers) {
+		for (Server serv : sortedXml) {
 			Server temp = null;
 			if (serv.coreCount >= job.cpuCores && serv.disk >= job.disk && serv.memory >= job.disk && serv.state != 4) {
 				temp = serv;
